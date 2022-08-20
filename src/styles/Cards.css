@@ -1,0 +1,37 @@
+div.container div{
+    color: white;
+    font-family: Tangerine, cursive;
+}
+h1.title{
+    text-align: center;
+}
+p.content{
+    font-size: large;
+}
+div.lether{
+    margin-top: 25px;
+    padding: 30px;
+    margin-right: 25px;
+    margin-left: 25px;
+    border-radius: 10%;
+    border: 2px solid white;
+}
+#dropdown1{
+    background-color: #1d093e ;
+    border-color: white;
+}
+#dropdown2{
+    background-color: #351070 ;
+    border-color: white;
+}
+div.dropdown{
+    display: flex;
+    justify-content: center;
+}
+p.line{
+    border-top: 1px solid white;
+    width:100%;
+}
+img.img-card{
+    border-radius: 10%;
+}
