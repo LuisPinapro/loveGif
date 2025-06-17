@@ -30,7 +30,7 @@ export default function Cards() {
     return () => {
       envelope.removeEventListener("animationend", handleAnimationEnd);
     };
-  }, [animationKey]);
+  }, [animationKey, selectedId]);
   //Efecto para mostrar el titulo de la carta
   useEffect(() => {
     if (!showLetter || !carta) return;
