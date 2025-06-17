@@ -1,7 +1,31 @@
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script&family=Great+Vibes&display=swap');
 
-span.title {
-    font-size: 25px;
-    vertical-align: middle;
-    font-family: Tangerine, cursive;
+.carta-navbar {
+    background: url('https://www.transparenttextures.com/patterns/paper-fibers.png');
+    background-color: #fdf5e6; /* tipo carta */
+    border-bottom: 2px solid #d4af37;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    padding: 15px 0;
+    text-align: center;
 }
 
+span.title {
+    font-size: 38px;
+    font-family: 'Great Vibes', cursive;
+    color: #4b3832;
+    margin-left: 10px;
+}
+
+.navbar-brand img {
+    border-radius: 50%;
+    border: 2px solid #d4af37;
+    background-color: white;
+    padding: 3px;
+    margin-right: 10px;
+}
+
+.navbar .container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

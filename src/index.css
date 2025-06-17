@@ -6,7 +6,12 @@ body {
     sans-serif, Tangerine, cursive !important;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #2d066d!important;
+  margin: 0;
+  font-family: 'Dancing Script', 'Great Vibes', 'Tangerine', cursive, sans-serif;
+  background-color: #fdf5e6;
+  background-image: url('https://www.transparenttextures.com/patterns/paper-fibers.png');
+  background-size: cover;
+  background-repeat: repeat;
 }
 
 code {

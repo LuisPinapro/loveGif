@@ -1,40 +1,281 @@
-div.container div{
-    color: white;
-    font-family: Tangerine, cursive;
+div.lether {
+    background: url('https://www.transparenttextures.com/patterns/old-wall.png');
+    background-size: cover;
+    color: #3b2f2f;
+    font-family: 'Dancing Script', cursive;
+    padding: 60px 40px;
+    margin: 40px auto;
+    border: 8px solid #d4af37;
+    border-image: linear-gradient(to bottom, #d4af37, #a97c50, #d4af37) 1;
+    border-radius: 15px;
+    max-width: 850px;
+    box-shadow: 10px 10px 25px rgba(0,0,0,0.3);
+    transform-origin: top center;
 }
-h1.title{
+
+h1.title {
+    font-size: 3em;
     text-align: center;
+    margin-bottom: 10px;
+    font-family: 'Great Vibes', cursive;
 }
-p.content{
-    font-size: large;
+
+p.line {
+    border-top: 1px dashed #d4af37;
+    margin: 20px 0;
 }
-div.lether{
-    margin-top: 25px;
-    padding: 30px;
-    margin-right: 25px;
-    margin-left: 25px;
-    border-radius: 10%;
-    border: 2px solid white;
+
+p.content {
+    font-size: 1.4em;
+    line-height: 1.8em;
+    white-space: pre-line;
 }
-#dropdown1{
-    background-color: #1d093e ;
-    border-color: white;
+
+img.img-card {
+  margin-top: 30px;
+  border-radius: 15px;
+  height: auto;
+  max-height: none; /* permite su altura natural */
+  width: auto;
+  max-width: 100%; /* no desborda en horizontal */
+  object-fit: contain;
 }
-#dropdown2{
-    background-color: #351070 ;
-    border-color: white;
+
+#dropdown1 {
+    background-color: #fce6c9; /* color crema */
+    color: #4b3832;
+    font-family: 'Dancing Script', cursive;
+    font-size: 1.4em;
+    border: 2px solid #d4af37;
+    border-radius: 12px;
+    padding: 8px 20px;
+    box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
+    transition: all 0.3s ease-in-out;
+    margin-bottom: 20px;
 }
-.dropdown-item{
-    color: white;
+
+#dropdown1:hover,
+#dropdown1:focus {
+    background-color: #ffe9b3;
+    color: #4b3832;
+    border-color: #b38600;
 }
-div.dropdown{
-    display: flex;
-    justify-content: center;
+
+.dropdown-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
-p.line{
-    border-top: 1px solid white;
-    width:100%;
+/*
+@keyframes abrirPergamino {
+    0% {
+        transform: scaleY(0.1);
+        opacity: 0;
+    }
+    50% {
+        transform: scaleY(1.05);
+        opacity: 0.5;
+    }
+    100% {
+        transform: scaleY(1);
+        opacity: 1;
+    }
+}*/
+.envelope {
+  position: relative;
+  width: 300px;
+  height: 200px;
+  margin: 0 auto 40px;
+  perspective: 800px;
+  animation: mostrarSobre 1.4s ease-in-out forwards;
 }
-img.img-card{
-    border-radius: 10%;
+
+.flap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #d4af37;
+  transform-origin: bottom;
+  animation: openFlap 1.4s ease-in-out forwards;
+  z-index: 2;
+}
+
+.body {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #fff8dc;
+  z-index: 1;
+  border: 2px solid #d4af37;
+  border-radius: 8px;
+}
+
+/* Animación al mostrar el sobre */
+@keyframes mostrarSobre {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Animación de abrir la tapa */
+@keyframes openFlap {
+  0% {
+    transform: rotateX(0deg);
+  }
+  100% {
+    transform: rotateX(-90deg);
+  }
+}
+
+/* Animación de aparición de carta */
+.carta-animada {
+  animation: salirDeSobreSuave 1.6s ease-in-out;
+}
+
+@keyframes salirDeSobreSuave {
+  0% {
+    transform: translateY(150px) scale(0.9);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0px) scale(1);
+    opacity: 1;
+  }
+}
+
+/* === NUEVO SOBRE VISUAL === */
+.envelope {
+  position: relative;
+  width: 320px;
+  height: 200px;
+  margin: 0 auto 40px;
+  perspective: 1000px;
+  animation: sobreAparece 1.5s ease-in-out;
+}
+
+.flap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 50%;
+  background: #a97c50;
+  transform-origin: top;
+  animation: flapAbre 1.4s ease-in-out forwards;
+  z-index: 3;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.body {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #fff8dc;
+  border: 2px solid #d4af37;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  z-index: 1;
+}
+
+/* Nueva animación de carta apareciendo */
+.carta-animada {
+  animation: cartaDesdeSobre 1.6s ease-out;
+}
+
+@keyframes flapAbre {
+  0% {
+    transform: rotateX(0deg);
+  }
+  100% {
+    transform: rotateX(-150deg);
+  }
+}
+
+@keyframes sobreAparece {
+  0% {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes cartaDesdeSobre {
+  0% {
+    transform: translateY(150px) scale(0.95);
+    opacity: 0;
+  }
+  60% {
+    transform: translateY(30px) scale(1);
+    opacity: 0.7;
+  }
+  100% {
+    transform: translateY(0px);
+    opacity: 1;
+  }
+}
+
+/* Animación de carta saliendo del sobre */
+.carta-animada {
+  animation: cartaDesdeSobre 1.6s ease-out;
+  position: relative;
+}
+
+@keyframes cartaDesdeSobre {
+  0% {
+    transform: translateY(150px) scale(0.95);
+    opacity: 0;
+  }
+  60% {
+    transform: translateY(30px) scale(1);
+    opacity: 0.7;
+  }
+  100% {
+    transform: translateY(0px);
+    opacity: 1;
+  }
+}
+
+/* Animación de escritura */
+.cursor {
+  display: inline-block;
+  width: 10px;
+  animation: parpadeo 1s steps(2, start) infinite;
+}
+
+@keyframes parpadeo {
+  0%, 100% { opacity: 0; }
+  50% { opacity: 1; }
+}
+/* Animación de imagen deslizándose hacia arriba */
+.fade-in-img {
+  animation: fadeInSlide 1.2s ease-out forwards;
+  opacity: 0;
+  transform: translateY(40px);
+}
+
+@keyframes fadeInSlide {
+  0% {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0px);
+  }
 }

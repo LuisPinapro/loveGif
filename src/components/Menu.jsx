@@ -6,7 +6,7 @@ import logo from '../images/logo.png'
 export default function Menu () {
 
     return(
-        <Navbar variant="dark" className='nav-title'>
+        <Navbar variant="dark" className='nav-title carta-navbar'>
             <Container className="justify-content-center">
                 <Navbar.Brand href="#home">
                     <img
