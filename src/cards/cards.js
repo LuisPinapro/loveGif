@@ -34,8 +34,14 @@ const Cartas = [
         title: 'Un pequeño juramento',
         content: 'Si estás leyendo esto es porque Luis del futuro ya se te declaro y al parecer le dijiste que si, está carta la escribo como testamento, como un tipo de promesa de que haré y daré lo mejor de mi para que está relación sea la más sana y linda que hayas tenido, quiero demostrarte que hay bondad en la gente y que no todos somos unos hijos de perra como los que hayas tenido como exnovios, se que habrá discusiones y diferencias pero yo espero que podamos hablarlas sin la necesidad de pelear o poner el orgullo por delante, realmente quiero que esto dure mucho o si dura poco que sean los mejores días, semanas o meses que pude haber vivido contigo. Y no importa si aún no te sientes preparada para abrirte sexualmente, eso nunca fue mi prioridad en ningún momento, yo te esperaré a que te sientas cómoda, ahorita lo que realmente me importa es hacerte feliz y quererte bonito. Te quiero mucho, gracias por aceptarme en tu vida.',
         img: tequiero
+    },
+    {
+        id: 6,
+        title: 'Un pequeño TEST',
+        content: 'Este es un contenido de prueba.',
+        img: tequiero
     }
-   
+    
 ]
 
 export default Cartas;
