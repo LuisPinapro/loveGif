@@ -1,8 +1,11 @@
 import "../styles/Cards.css";
 import Container from "react-bootstrap/Container";
-import Cartas from "../cards/cards";
+//import Cartas from "../cards/cards";
 import Dropdown from "react-bootstrap/Dropdown";
 import { useState, useRef, useEffect } from "react";
+import { useNavigate } from "react-router-dom"; // nuevo
+const backendUrl = "https://lovegifbackend.onrender.com"; // tu dominio real
+
 
 export default function Cards() {
   const [selectedId, setSelectedId] = useState(null);
@@ -12,9 +15,24 @@ export default function Cards() {
   const [displayedWordsTitle, setDisplayedWordsTitle] = useState([]);
   const envelopeRef = useRef(null);
   const [imagenVisible, setImagenVisible] = useState(false);
+  const [cartas, setCartas] = useState([]);
+  const navigate = useNavigate();
 
-  const carta = Cartas.find((c) => c.id === selectedId);
+  const carta = cartas.find((c) => c.id === selectedId);
+
+  const imageUrl = carta?.img?.startsWith("http")
+  ? carta.img
+  : `${backendUrl}${carta?.img || ""}`;
+
   const [showLetterBody, setShowLetterBody] = useState(false);
+  //Traer las cartas desde back
+  useEffect(() => {
+    fetch("https://lovegifbackend.onrender.com/cartas")
+      .then((res) => res.json())
+      .then(setCartas)
+      .catch(console.error);
+  }, []);
+
   //Efecto para manejar la animación del sobre
   useEffect(() => {
     if (!selectedId) return;
@@ -31,6 +49,7 @@ export default function Cards() {
       envelope.removeEventListener("animationend", handleAnimationEnd);
     };
   }, [animationKey, selectedId]);
+
   //Efecto para mostrar el titulo de la carta
   useEffect(() => {
     if (!showLetter || !carta) return;
@@ -85,6 +104,12 @@ export default function Cards() {
   return (
     <Container>
       <div className="dropdown-wrapper">
+        <div className="boton-wrapper">
+          <button className="boton-escribir" onClick={() => navigate("/nueva")}>
+            ✍️ Escribir nueva carta
+          </button>
+        </div>
+
         <Dropdown>
           <Dropdown.Toggle
             id="dropdown1"
@@ -93,7 +118,7 @@ export default function Cards() {
             Ver Cartitas
           </Dropdown.Toggle>
           <Dropdown.Menu id="dropdown2">
-            {Cartas.map((item) => (
+            {cartas.map((item) => (
               <Dropdown.Item
                 onClick={() => handleCardSelect(item.id)}
                 key={item.id}
@@ -129,7 +154,7 @@ export default function Cards() {
             <div className="d-flex justify-content-center fade-in-img">
               <img
                 className="img-card"
-                src={carta.img}
+                src={imageUrl}
                 alt="decorative"
                 width="100%"
               />

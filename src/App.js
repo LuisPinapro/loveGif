@@ -1,14 +1,17 @@
-import './App.css';
-import Menu from './components/Menu';
-import Cards from './components/Cards';
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Cards from "./components/Cards";
+import CartaForm from "./components/CartaForm";
+import Menu from "./components/Menu";
 
-function App() {
+
+export default function App() {
   return (
-    <div className="App">
+    <Router>
       <Menu />
-      <Cards />
-    </div>
+      <Routes>
+        <Route path="/" element={<Cards />} />
+        <Route path="/nueva" element={<CartaForm />} />
+      </Routes>
+    </Router>
   );
 }
-
-export default App;

@@ -279,3 +279,28 @@ img.img-card {
     transform: translateY(0px);
   }
 }
+
+/* Estilo del boton escribir carta */
+.boton-wrapper {
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 20px;
+  margin-bottom: 20px;
+}
+
+.boton-escribir {
+  background-color: #d4af37;
+  color: white;
+  border: none;
+  font-family: 'Dancing Script', cursive;
+  padding: 10px 20px;
+  border-radius: 12px;
+  font-size: 1.3em;
+  cursor: pointer;
+  box-shadow: 2px 2px 10px rgba(0,0,0,0.2);
+  transition: background 0.3s ease;
+}
+
+.boton-escribir:hover {
+  background-color: #b99445;
+}
