@@ -304,3 +304,25 @@ img.img-card {
 .boton-escribir:hover {
   background-color: #b99445;
 }
+
+.foto-lateral {
+  position: absolute;
+  top: 80px;
+  max-height: 180px;
+  max-width: 120px;
+  width: auto;
+  height: auto;
+  border-radius: 12px;
+  object-fit: cover;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+  opacity: 0;
+  animation: fadeSide 0.8s forwards;
+}
+.foto-lateral.left  { left: -140px; }
+.foto-lateral.right { right: -140px; }
+
+@keyframes fadeSide {
+  from { opacity: 0; transform: translateY(15px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+

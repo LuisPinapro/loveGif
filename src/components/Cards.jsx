@@ -1,108 +1,113 @@
 import "../styles/Cards.css";
 import Container from "react-bootstrap/Container";
-//import Cartas from "../cards/cards";
-import Dropdown from "react-bootstrap/Dropdown";
+import Dropdown  from "react-bootstrap/Dropdown";
+import Carousel  from "react-bootstrap/Carousel";
 import { useState, useRef, useEffect } from "react";
-import { useNavigate } from "react-router-dom"; // nuevo
-const backendUrl = "https://lovegifbackend.onrender.com"; // tu dominio real
+import { useNavigate } from "react-router-dom";
 
+const backendUrl = "https://lovegifbackend.onrender.com";
 
 export default function Cards() {
+  /* ─────────── estados base ─────────── */
+  const [cartas, setCartas] = useState([]);
   const [selectedId, setSelectedId] = useState(null);
   const [animationKey, setAnimationKey] = useState(0);
-  const [showLetter, setShowLetter] = useState(false);
-  const [displayedWords, setDisplayedWords] = useState([]);
-  const [displayedWordsTitle, setDisplayedWordsTitle] = useState([]);
+
+  const [showLetter, setShowLetter]           = useState(false);
+  const [showLetterBody, setShowLetterBody]   = useState(false);
+  const [displayedTitle, setDisplayedTitle]   = useState("");
+  const [displayedContent, setDisplayedContent] = useState("");
+
+
+  const [showCarousel, setShowCarousel] = useState(false);
+
   const envelopeRef = useRef(null);
-  const [imagenVisible, setImagenVisible] = useState(false);
-  const [cartas, setCartas] = useState([]);
-  const navigate = useNavigate();
+  const navigate    = useNavigate();
+  const carta       = cartas.find(c => c.id === selectedId);
 
-  const carta = cartas.find((c) => c.id === selectedId);
-
-  const imageUrl = carta?.img?.startsWith("http")
-  ? carta.img
-  : `${backendUrl}${carta?.img || ""}`;
-
-  const [showLetterBody, setShowLetterBody] = useState(false);
-  //Traer las cartas desde back
+  /* ───────── cargar cartas ───────── */
   useEffect(() => {
-    fetch("https://lovegifbackend.onrender.com/cartas")
-      .then((res) => res.json())
+    fetch(`${backendUrl}/cartas`)
+      .then(r => r.json())
       .then(setCartas)
       .catch(console.error);
   }, []);
 
-  //Efecto para manejar la animación del sobre
+  /* ───────── animación del sobre ───────── */
   useEffect(() => {
     if (!selectedId) return;
 
-    const envelope = envelopeRef.current;
-    if (!envelope) return;
+    const envelopeNode = envelopeRef.current;   // ← copia local
+    if (!envelopeNode) return;
 
-    const handleAnimationEnd = () => {
-      setShowLetter(true);
-    };
+    const handleEnd = () => setShowLetter(true);
+    envelopeNode.addEventListener("animationend", handleEnd);
 
-    envelope.addEventListener("animationend", handleAnimationEnd);
+    /* cleanup usa la misma referencia */
     return () => {
-      envelope.removeEventListener("animationend", handleAnimationEnd);
+      envelopeNode.removeEventListener("animationend", handleEnd);
     };
   }, [animationKey, selectedId]);
 
-  //Efecto para mostrar el titulo de la carta
+  /* ─── título letra-por-letra ─── */
   useEffect(() => {
     if (!showLetter || !carta) return;
-
-    const texto = carta.title;
     let i = 0;
-    setDisplayedWordsTitle([]);
-
-    const interval = setInterval(() => {
+    setDisplayedTitle("");
+    const id = setInterval(() => {
       i++;
-      setDisplayedWordsTitle(texto.slice(0, i));
-      if (i === texto.length) {
-        clearInterval(interval);
-        setShowLetterBody(true); // Muestra el cuerpo de la carta después de mostrar el título
+      setDisplayedTitle(carta.title.slice(0, i));
+      if (i === carta.title.length) {
+        clearInterval(id);
+        setShowLetterBody(true);
       }
-    }, 100); // velocidad por letra
-
-    return () => clearInterval(interval);
+    }, 100);
+    return () => clearInterval(id);
   }, [showLetter, carta]);
 
-  // Efecto para mostrar la carta letra por letra
-
+  /* ─── cuerpo letra-por-letra + rotación lateral ─── */
   useEffect(() => {
-    if (!showLetter || !carta || !showLetterBody) return;
+    if (!showLetterBody || !carta) return;
 
-    const texto = carta.content;
+    /* texto */
     let i = 0;
-    setDisplayedWords([]);
-    setImagenVisible(false);
+    setDisplayedContent("");
+    setShowCarousel(false);
 
-    const interval = setInterval(() => {
+    const txtTimer = setInterval(() => {
       i++;
-      setDisplayedWords(texto.slice(0, i));
-      if (i === texto.length) {
-        clearInterval(interval);
-        setTimeout(() => setImagenVisible(true), 300); // Espera 300ms antes de mostrar la imagen
+      setDisplayedContent(carta.content.slice(0, i));
+      if (i === carta.content.length) {
+        clearInterval(txtTimer);
+        setTimeout(() => setShowCarousel(true), 500);
       }
-    }, 35); // velocidad por letra
+    }, 35);
 
-    return () => clearInterval(interval);
-  }, [showLetter, carta, showLetterBody]);
 
-  function handleCardSelect(id) {
+    return () => {
+      clearInterval(txtTimer);
+    };
+  }, [showLetterBody, carta]);
+
+  /* ─── cambiar carta ─── */
+  const handleCardSelect = (id) => {
+    setSelectedId(id);
     setShowLetter(false);
     setShowLetterBody(false);
-    setImagenVisible(false);
-    setDisplayedWords([]);
-    setSelectedId(id);
-    setAnimationKey((prev) => prev + 1);
-  }
+    setDisplayedTitle("");
+    setDisplayedContent("");
+    setShowCarousel(false);
+    setAnimationKey(k => k + 1);
+  };
 
+  /* util para obtener url absoluta */
+  const urlAbs = (u) => u.startsWith("http") ? u : `${backendUrl}${u}`;
+
+  /* ───────────── render ───────────── */
   return (
     <Container>
+
+      {/* barra superior */}
       <div className="dropdown-wrapper">
         <div className="boton-wrapper">
           <button className="boton-escribir" onClick={() => navigate("/nueva")}>
@@ -111,54 +116,59 @@ export default function Cards() {
         </div>
 
         <Dropdown>
-          <Dropdown.Toggle
-            id="dropdown1"
-            disabled={!showLetter && selectedId !== null}
-          >
+          <Dropdown.Toggle id="dropdown1" disabled={!showLetter && selectedId}>
             Ver Cartitas
           </Dropdown.Toggle>
           <Dropdown.Menu id="dropdown2">
-            {cartas.map((item) => (
-              <Dropdown.Item
-                onClick={() => handleCardSelect(item.id)}
-                key={item.id}
-                disabled={!showLetter && selectedId !== null}
-              >
-                {item.title}
+            {cartas.map(c => (
+              <Dropdown.Item key={c.id}
+                             disabled={!showLetter && selectedId}
+                             onClick={() => handleCardSelect(c.id)}>
+                {c.title}
               </Dropdown.Item>
             ))}
           </Dropdown.Menu>
         </Dropdown>
       </div>
 
+      {/* sobre */}
       {selectedId && !showLetter && (
-        <div
-          className="envelope animacion-sobre"
-          key={`sobre-${animationKey}`}
-          ref={envelopeRef}
-        >
-          <div className="flap"></div>
-          <div className="body"></div>
+        <div ref={envelopeRef} className="envelope animacion-sobre" key={`sobre-${animationKey}`}>
+          <div className="flap" /><div className="body" />
         </div>
       )}
 
+      {/* carta */}
       {selectedId && showLetter && (
         <div className="lether carta-animada" key={`carta-${animationKey}`}>
-          <h1 className="title">{displayedWordsTitle}</h1>
-          <p className="line"></p>
+          {/* audio */}
+          {carta.special && carta.audio && (
+            <audio src={urlAbs(carta.audio)} autoPlay />
+          )}
+
+          <h1 className="title">{displayedTitle}</h1>
+          <p className="line" />
           <p className="content">
-            {displayedWords}
+            {displayedContent}
             <span className="cursor">|</span>
-          </p>
-          {imagenVisible && (
+          </p> 
+
+          {/* carta normal con 1 imagen */}
+          {!carta.special && (
             <div className="d-flex justify-content-center fade-in-img">
-              <img
-                className="img-card"
-                src={imageUrl}
-                alt="decorative"
-                width="100%"
-              />
+              {carta.img && <img className="img-card" src={urlAbs(carta.img)} alt="decorative" />}
             </div>
+          )}
+
+          {/* carrusel final */}
+          {carta.special && showCarousel && (
+            <Carousel fade interval={4000} className="mt-4">
+              {carta.images.map((u,i) => (
+                <Carousel.Item key={i}>
+                  <img className="d-block w-100" src={urlAbs(u)} alt={`foto ${i}`} />
+                </Carousel.Item>
+              ))}
+            </Carousel>
           )}
         </div>
       )}
