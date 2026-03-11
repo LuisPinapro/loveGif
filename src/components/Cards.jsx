@@ -1,11 +1,11 @@
 import "../styles/Cards.css";
 import Container from "react-bootstrap/Container";
-//import Cartas from "../cards/cards";
 import Dropdown from "react-bootstrap/Dropdown";
 import { useState, useRef, useEffect } from "react";
-import { useNavigate } from "react-router-dom"; // nuevo
-const backendUrl = "https://lovegifbackend.onrender.com"; // tu dominio real
+import { useNavigate } from "react-router-dom";
+import LoadingScreen from "./LoadingScreen";
 
+const backendUrl = "https://lovegifbackend.onrender.com";
 
 export default function Cards() {
   const [selectedId, setSelectedId] = useState(null);
@@ -16,24 +16,39 @@ export default function Cards() {
   const envelopeRef = useRef(null);
   const [imagenVisible, setImagenVisible] = useState(false);
   const [cartas, setCartas] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [showLetterBody, setShowLetterBody] = useState(false);
+  const [skipAnimation, setSkipAnimation] = useState(false);
+  const [imageError, setImageError] = useState(false);
   const navigate = useNavigate();
 
   const carta = cartas.find((c) => c.id === selectedId);
-
   const imageUrl = carta?.img?.startsWith("http")
-  ? carta.img
-  : `${backendUrl}${carta?.img || ""}`;
+    ? carta.img
+    : `${backendUrl}${carta?.img || ""}`;
 
-  const [showLetterBody, setShowLetterBody] = useState(false);
-  //Traer las cartas desde back
+  // Fetch cartas from backend
   useEffect(() => {
-    fetch("https://lovegifbackend.onrender.com/cartas")
-      .then((res) => res.json())
-      .then(setCartas)
-      .catch(console.error);
+    const fetchCartas = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch("https://lovegifbackend.onrender.com/cartas");
+        if (!response.ok) throw new Error("Error fetching cartas");
+        const data = await response.json();
+        setCartas(data);
+        setError(null);
+      } catch (err) {
+        console.error(err);
+        setError("No se pudieron cargar las cartas. Intenta más tarde.");
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchCartas();
   }, []);
 
-  //Efecto para manejar la animación del sobre
+  // Envelope animation handler
   useEffect(() => {
     if (!selectedId) return;
 
@@ -50,7 +65,7 @@ export default function Cards() {
     };
   }, [animationKey, selectedId]);
 
-  //Efecto para mostrar el titulo de la carta
+  // Display title with typing effect
   useEffect(() => {
     if (!showLetter || !carta) return;
 
@@ -58,20 +73,25 @@ export default function Cards() {
     let i = 0;
     setDisplayedWordsTitle([]);
 
+    if (skipAnimation) {
+      setDisplayedWordsTitle(texto);
+      setShowLetterBody(true);
+      return;
+    }
+
     const interval = setInterval(() => {
       i++;
       setDisplayedWordsTitle(texto.slice(0, i));
       if (i === texto.length) {
         clearInterval(interval);
-        setShowLetterBody(true); // Muestra el cuerpo de la carta después de mostrar el título
+        setShowLetterBody(true);
       }
-    }, 100); // velocidad por letra
+    }, 100);
 
     return () => clearInterval(interval);
-  }, [showLetter, carta]);
+  }, [showLetter, carta, skipAnimation]);
 
-  // Efecto para mostrar la carta letra por letra
-
+  // Display content with typing effect
   useEffect(() => {
     if (!showLetter || !carta || !showLetterBody) return;
 
@@ -80,87 +100,243 @@ export default function Cards() {
     setDisplayedWords([]);
     setImagenVisible(false);
 
+    if (skipAnimation) {
+      setDisplayedWords(texto);
+      setTimeout(() => setImagenVisible(true), 100);
+      return;
+    }
+
     const interval = setInterval(() => {
       i++;
       setDisplayedWords(texto.slice(0, i));
       if (i === texto.length) {
         clearInterval(interval);
-        setTimeout(() => setImagenVisible(true), 300); // Espera 300ms antes de mostrar la imagen
+        setTimeout(() => setImagenVisible(true), 300);
       }
-    }, 35); // velocidad por letra
+    }, 35);
 
     return () => clearInterval(interval);
-  }, [showLetter, carta, showLetterBody]);
+  }, [showLetter, carta, showLetterBody, skipAnimation]);
 
   function handleCardSelect(id) {
     setShowLetter(false);
     setShowLetterBody(false);
     setImagenVisible(false);
     setDisplayedWords([]);
+    setDisplayedWordsTitle([]);
+    setImageError(false);
     setSelectedId(id);
     setAnimationKey((prev) => prev + 1);
   }
 
   return (
     <Container>
-      <div className="dropdown-wrapper">
-        <div className="boton-wrapper">
-          <button className="boton-escribir" onClick={() => navigate("/nueva")}>
-            ✍️ Escribir nueva carta
-          </button>
+      {/* Loading Screen */}
+      {loading && <LoadingScreen />}
+
+      {/* Error State */}
+      {error && (
+        <div
+          role="alert"
+          aria-live="assertive"
+          className="py-5 text-center"
+          style={{
+            color: "#c62828",
+            backgroundColor: "rgba(198, 40, 40, 0.1)",
+            padding: "var(--spacing-md)",
+            borderRadius: "var(--radius-md)",
+            marginBottom: "var(--spacing-lg)",
+            marginTop: "var(--spacing-lg)",
+          }}
+        >
+          <p>{error}</p>
         </div>
+      )}
 
-        <Dropdown>
-          <Dropdown.Toggle
-            id="dropdown1"
-            disabled={!showLetter && selectedId !== null}
-          >
-            Ver Cartitas
-          </Dropdown.Toggle>
-          <Dropdown.Menu id="dropdown2">
-            {cartas.map((item) => (
-              <Dropdown.Item
-                onClick={() => handleCardSelect(item.id)}
-                key={item.id}
-                disabled={!showLetter && selectedId !== null}
-              >
-                {item.title}
-              </Dropdown.Item>
-            ))}
-          </Dropdown.Menu>
-        </Dropdown>
-      </div>
+      {/* Controls Section */}
+      {!loading && (
+        <div className="dropdown-wrapper">
+          <div className="boton-wrapper">
+            <button
+              className="boton-escribir"
+              onClick={() => navigate("/nueva")}
+              aria-label="Escribir nueva carta"
+              title="Escribe una nueva carta para compartir"
+            >
+              ✍️ Escribir nueva carta
+            </button>
+          </div>
 
+          <Dropdown>
+            <Dropdown.Toggle
+              id="dropdown1"
+              disabled={!showLetter && selectedId !== null}
+              aria-label={
+                cartas.length === 0
+                  ? "Sin cartas disponibles"
+                  : `Ver cartitas. ${cartas.length} cartas disponibles`
+              }
+              title="Selecciona una carta para leer"
+            >
+              Ver Cartitas
+            </Dropdown.Toggle>
+            <Dropdown.Menu id="dropdown2" aria-label="Lista de cartas disponibles">
+              {cartas.length === 0 ? (
+                <Dropdown.Item disabled className="text-secondary">
+                  No hay cartas aún. ¡Escribe una!
+                </Dropdown.Item>
+              ) : (
+                cartas.map((item) => (
+                  <Dropdown.Item
+                    onClick={() => {
+                      setSkipAnimation(false);
+                      handleCardSelect(item.id);
+                    }}
+                    key={item.id}
+                    disabled={!showLetter && selectedId !== null}
+                    aria-label={`Leer carta: ${item.title}`}
+                  >
+                    {item.title}
+                  </Dropdown.Item>
+                ))
+              )}
+            </Dropdown.Menu>
+          </Dropdown>
+        </div>
+      )}
+
+      {/* Envelope Animation */}
       {selectedId && !showLetter && (
         <div
           className="envelope animacion-sobre"
           key={`sobre-${animationKey}`}
           ref={envelopeRef}
+          role="img"
+          aria-label="Sobre animado abriéndose"
         >
-          <div className="flap"></div>
-          <div className="body"></div>
+          <div className="flap" aria-hidden="true"></div>
+          <div className="body" aria-hidden="true"></div>
         </div>
       )}
 
+      {/* Letter Content */}
       {selectedId && showLetter && (
-        <div className="lether carta-animada" key={`carta-${animationKey}`}>
-          <h1 className="title">{displayedWordsTitle}</h1>
-          <p className="line"></p>
-          <p className="content">
+        <article
+          className="lether carta-animada"
+          key={`carta-${animationKey}`}
+          role="article"
+          aria-label={`Contenido de la carta: ${displayedWordsTitle}`}
+        >
+
+          <h1 className="title" aria-label={`Título: ${displayedWordsTitle}`}>
+            {displayedWordsTitle}
+          </h1>
+          <p className="line" aria-hidden="true"></p>
+          <p className="content" aria-live="polite" aria-atomic="false">
             {displayedWords}
-            <span className="cursor">|</span>
+            {!skipAnimation && displayedWords.length > 0 && displayedWords.length < carta?.content?.length && (
+              <span className="cursor" aria-hidden="true">
+                |
+              </span>
+            )}
           </p>
-          {imagenVisible && (
+
+          {/* Image with fade-in animation */}
+          {imagenVisible && carta?.img && (
             <div className="d-flex justify-content-center fade-in-img">
               <img
                 className="img-card"
                 src={imageUrl}
-                alt="decorative"
-                width="100%"
+                alt={`Imagen de la carta: ${displayedWordsTitle}`}
+                loading="lazy"
+                onError={(e) => {
+                  console.error("Error loading image from:", imageUrl);
+                  setImageError(true);
+                  e.target.style.display = "none";
+                }}
               />
             </div>
           )}
-        </div>
+
+          {/* Image Error Message */}
+          {imagenVisible && carta?.img && imageError && (
+            <div
+              style={{
+                marginTop: "var(--spacing-lg)",
+                padding: "var(--spacing-md)",
+                backgroundColor: "rgba(212, 103, 143, 0.1)",
+                borderLeft: "3px solid var(--primary-rose)",
+                borderRadius: "var(--radius-sm)",
+                color: "var(--text-secondary)",
+                fontSize: "0.9rem",
+                textAlign: "center",
+              }}
+            >
+              📸 No se pudo cargar la imagen, pero la carta está completa.
+            </div>
+          )}
+
+          {/* Close Card Button */}
+          {/* Close Card Button with Skip Button */}
+          <div
+            style={{
+              marginTop: "var(--spacing-lg)",
+              display: "flex",
+              justifyContent: "center",
+              gap: "var(--spacing-md)",
+              flexWrap: "wrap",
+              alignItems: "center",
+            }}
+          >
+            {/* Skip Animation Button */}
+            {!skipAnimation && ((displayedWordsTitle.length > 0 && displayedWordsTitle.length < carta?.title?.length) || (displayedWords.length < carta?.content?.length)) && (
+              <button
+                className="skip-button-inline"
+                onClick={() => setSkipAnimation(true)}
+                aria-label="Saltar animación de escritura"
+                title="Ver la carta completa inmediatamente"
+              >
+                ⏩ Omitir escritura
+              </button>
+            )}
+            
+            <button
+              onClick={() => {
+                setSelectedId(null);
+                setSkipAnimation(false);
+                setImageError(false);
+              }}
+              style={{
+                background: "linear-gradient(135deg, var(--primary-rose), var(--primary-rose-dark))",
+                color: "white",
+                border: "none",
+                padding: "var(--spacing-sm) var(--spacing-md)",
+                borderRadius: "var(--radius-md)",
+                cursor: "pointer",
+                fontSize: "1rem",
+                transition: "all var(--transition-base)",
+                minHeight: "44px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+              onMouseEnter={(e) => {
+                e.target.style.background =
+                  "linear-gradient(135deg, var(--primary-rose-dark), var(--secondary-burgundy))";
+                e.target.style.transform = "translateY(-2px)";
+              }}
+              onMouseLeave={(e) => {
+                e.target.style.background =
+                  "linear-gradient(135deg, var(--primary-rose), var(--primary-rose-dark))";
+                e.target.style.transform = "translateY(0)";
+              }}
+              aria-label="Cerrar carta"
+              title="Cierra esta carta para ver otra"
+            >
+              ← Atrás
+            </button>
+          </div>
+        </article>
       )}
     </Container>
   );

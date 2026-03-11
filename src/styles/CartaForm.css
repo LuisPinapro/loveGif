@@ -3,59 +3,228 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #fffaf3;
-  padding: 40px 20px;
+  background: linear-gradient(135deg, #faf8f4 0%, #f5f0ec 100%);
+  background-image: 
+    linear-gradient(135deg, rgba(250, 248, 244, 0.95), rgba(245, 240, 236, 0.95)),
+    url('https://www.transparenttextures.com/patterns/paper-fibers.png');
+  padding: var(--spacing-lg);
+  padding-bottom: 40px;
 }
 
 .form-carta {
-  background-color: #fff9ed;
-  border: 2px solid #d4af37;
-  border-radius: 15px;
-  padding: 30px;
+  background: linear-gradient(to bottom, #fffbf7, #faf8f4);
+  border: 2px solid var(--primary-rose);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-xl);
   max-width: 600px;
   width: 100%;
-  font-family: 'Dancing Script', cursive;
-  box-shadow: 0 5px 25px rgba(0,0,0,0.1);
+  font-family: var(--font-body);
+  box-shadow: 
+    0 8px 32px rgba(45, 36, 32, 0.12),
+    0 1px 3px rgba(212, 103, 143, 0.2) inset;
+  animation: slideUp 0.5s ease-out;
+  position: relative;
 }
 
+.form-carta::before {
+  content: '';
+  position: absolute;
+  top: -8px;
+  left: -8px;
+  right: -8px;
+  bottom: -8px;
+  background: linear-gradient(135deg, var(--primary-rose) 0%, var(--secondary-burgundy) 100%);
+  z-index: -1;
+  border-radius: var(--radius-lg);
+  filter: blur(8px);
+  opacity: 0.1;
+}
+
+/* Heading Styles */
 .form-carta h2 {
-  font-family: 'Great Vibes', cursive;
-  font-size: 2.5em;
+  font-family: var(--font-serif);
+  font-size: clamp(1.8rem, 5vw, 2.2rem);
   text-align: center;
-  margin-bottom: 30px;
-  color: #a97c50;
+  margin-bottom: var(--spacing-lg);
+  color: var(--primary-rose-dark);
+  letter-spacing: 0.5px;
+  text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
 }
 
+/* Form Inputs */
 .form-carta input[type="text"],
 .form-carta textarea,
 .form-carta input[type="file"] {
   width: 100%;
-  font-size: 1.2em;
-  padding: 12px;
-  margin-bottom: 20px;
-  border: 1px solid #d4af37;
-  border-radius: 10px;
+  font-size: 1rem;
+  padding: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
+  border: 2px solid var(--primary-rose);
+  border-radius: var(--radius-md);
   font-family: inherit;
+  background-color: white;
+  color: var(--text-primary);
+  transition: all var(--transition-base);
 }
 
+.form-carta input[type="text"]::placeholder,
+.form-carta textarea::placeholder {
+  color: var(--text-light);
+  opacity: 0.7;
+}
+
+/* Focus States */
+.form-carta input[type="text"]:focus,
+.form-carta textarea:focus,
+.form-carta input[type="file"]:focus {
+  outline: none;
+  border-color: var(--primary-rose-dark);
+  box-shadow: 0 0 0 3px rgba(212, 103, 143, 0.15);
+  background-color: #fffbf7;
+}
+
+/* Textarea Specific */
+.form-carta textarea {
+  resize: vertical;
+  min-height: 150px;
+  line-height: 1.6;
+}
+
+/* File Input Styling */
+.form-carta input[type="file"] {
+  padding: var(--spacing-md);
+  cursor: pointer;
+}
+
+.form-carta input[type="file"]::file-selector-button {
+  background: linear-gradient(135deg, var(--primary-rose), var(--primary-rose-dark));
+  color: white;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-weight: bold;
+  margin-right: var(--spacing-sm);
+  transition: var(--transition-base);
+}
+
+.form-carta input[type="file"]::file-selector-button:hover {
+  background: linear-gradient(135deg, var(--primary-rose-dark), var(--secondary-burgundy));
+}
+
+/* Submit Button */
 .form-carta button {
-  background-color: #d4af37;
+  background: linear-gradient(135deg, var(--primary-rose), var(--primary-rose-dark));
   color: white;
   border: none;
-  font-size: 1.3em;
-  padding: 10px 30px;
-  border-radius: 10px;
+  font-size: 1.1rem;
+  padding: var(--spacing-md) var(--spacing-lg);
+  border-radius: var(--radius-md);
   cursor: pointer;
   width: 100%;
-  transition: background 0.3s ease;
+  font-family: inherit;
+  font-weight: bold;
+  transition: all var(--transition-base);
+  box-shadow: 0 4px 12px rgba(212, 103, 143, 0.3);
+  letter-spacing: 0.5px;
 }
 
-.form-carta button:hover {
-  background-color: #a97c50;
+.form-carta button:hover:not(:disabled) {
+  background: linear-gradient(135deg, var(--primary-rose-dark), var(--secondary-burgundy));
+  box-shadow: 0 6px 16px rgba(212, 103, 143, 0.4);
+  transform: translateY(-2px);
 }
 
+.form-carta button:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(212, 103, 143, 0.3);
+}
+
+.form-carta button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Error Message */
 .form-carta .error {
-  color: red;
-  text-align: center;
-  margin-top: 10px;
+  color: #d32f2f;
+  background-color: rgba(211, 47, 47, 0.1);
+  padding: var(--spacing-md);
+  border-left: 4px solid #d32f2f;
+  border-radius: var(--radius-sm);
+  margin-top: var(--spacing-md);
+  font-size: 0.95rem;
+}
+
+/* Success Message (if needed) */
+.form-carta .success {
+  color: #388e3c;
+  background-color: rgba(56, 142, 60, 0.1);
+  padding: var(--spacing-md);
+  border-left: 4px solid #388e3c;
+  border-radius: var(--radius-sm);
+  margin-top: var(--spacing-md);
+  font-size: 0.95rem;
+}
+
+/* Animations */
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ============ Responsive Design ============ */
+@media (max-width: 768px) {
+  .form-page {
+    padding: var(--spacing-md);
+  }
+
+  .form-carta {
+    padding: var(--spacing-lg);
+  }
+
+  .form-carta h2 {
+    font-size: 1.6rem;
+    margin-bottom: var(--spacing-md);
+  }
+
+  .form-carta input,
+  .form-carta textarea {
+    margin-bottom: var(--spacing-md);
+  }
+}
+
+@media (max-width: 480px) {
+  .form-page {
+    padding: var(--spacing-md);
+    align-items: flex-start;
+    padding-top: var(--spacing-lg);
+  }
+
+  .form-carta {
+    padding: var(--spacing-md);
+    border-radius: var(--radius-md);
+  }
+
+  .form-carta h2 {
+    font-size: 1.4rem;
+    margin-bottom: var(--spacing-md);
+  }
+
+  .form-carta input[type="text"],
+  .form-carta textarea {
+    font-size: 16px; /* Prevents zoom on iOS */
+    padding: 12px;
+  }
+
+  .form-carta button {
+    padding: var(--spacing-md);
+    font-size: 1rem;
+  }
 }

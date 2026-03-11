@@ -1,0 +1,247 @@
+/* ============ Loading Screen Container ============ */
+.loading-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #faf8f4 0%, #f5f0ec 100%);
+  background-attachment: fixed;
+  z-index: 9999;
+  animation: fadeInLoading 0.6s ease-out;
+}
+
+.loading-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-xl);
+  position: relative;
+}
+
+/* ============ Loading Envelope Animation ============ */
+.loading-envelope {
+  position: relative;
+  width: 200px;
+  height: 150px;
+  perspective: 1000px;
+  animation: envelopeFloat 3s ease-in-out infinite;
+}
+
+.loading-flap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 50%;
+  background: linear-gradient(135deg, var(--primary-rose), var(--primary-rose-dark));
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  animation: flapBounce 2s ease-in-out infinite;
+  box-shadow: inset 0 -1px 3px rgba(255, 255, 255, 0.4);
+  transform-origin: top;
+}
+
+.loading-body {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, #fffbf7, #faf8f4);
+  border: 2px solid var(--border-color);
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+  box-shadow: 
+    0 10px 30px rgba(45, 36, 32, 0.15),
+    inset 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+/* ============ Loading Title ============ */
+.loading-title {
+  font-family: var(--font-serif);
+  font-size: clamp(1.5rem, 4vw, 2rem);
+  color: var(--primary-rose-dark);
+  margin: 0;
+  text-align: center;
+  letter-spacing: 0.5px;
+  text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
+  animation: fadeInUp 1s ease-out;
+}
+
+/* ============ Loading Dots ============ */
+.loading-dots {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  align-items: center;
+  height: 40px;
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--primary-rose);
+  box-shadow: 0 2px 8px rgba(212, 103, 143, 0.3);
+  animation: dotBounce 1.4s infinite;
+}
+
+.dot:nth-child(1) {
+  animation-delay: 0s;
+}
+
+.dot:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.dot:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+/* ============ Floating Hearts ============ */
+.floating-hearts {
+  position: absolute;
+  width: 100%;
+  height: 300px;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.heart {
+  position: absolute;
+  font-size: 24px;
+  animation: floatingHeart 3s ease-in-out infinite;
+  bottom: -50px;
+}
+
+.heart:nth-child(1) {
+  left: 20%;
+  animation-delay: 0s;
+}
+
+.heart:nth-child(2) {
+  left: 50%;
+  animation-delay: 0.6s;
+}
+
+.heart:nth-child(3) {
+  left: 80%;
+  animation-delay: 1.2s;
+}
+
+/* ============ Animations ============ */
+
+@keyframes fadeInLoading {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes envelopeFloat {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-30px);
+  }
+}
+
+@keyframes flapBounce {
+  0%, 100% {
+    transform: rotateX(0deg);
+  }
+  50% {
+    transform: rotateX(-30deg);
+  }
+}
+
+@keyframes dotBounce {
+  0%, 100% {
+    transform: translateY(0);
+    opacity: 0.6;
+  }
+  50% {
+    transform: translateY(-20px);
+    opacity: 1;
+  }
+}
+
+@keyframes floatingHeart {
+  from {
+    bottom: -50px;
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  to {
+    bottom: 350px;
+    opacity: 0;
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ============ Responsive Design ============ */
+@media (max-width: 768px) {
+  .loading-envelope {
+    width: 150px;
+    height: 120px;
+  }
+
+  .loading-title {
+    font-size: 1.3rem;
+  }
+
+  .heart {
+    font-size: 18px;
+  }
+
+  .floating-hearts {
+    height: 250px;
+  }
+}
+
+@media (max-width: 480px) {
+  .loading-envelope {
+    width: 120px;
+    height: 100px;
+  }
+
+  .loading-title {
+    font-size: 1.1rem;
+  }
+
+  .heart {
+    font-size: 16px;
+  }
+
+  .floating-hearts {
+    height: 200px;
+  }
+
+  .dot {
+    width: 10px;
+    height: 10px;
+  }
+}
