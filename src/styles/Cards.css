@@ -1,12 +1,12 @@
 /* ============ Letter/Card Styles ============ */
 div.lether {
   /* Papel blanco con textura */
-  background-color: #fdfcfb;
+  background-color: #ffffff;
   color: var(--text-primary);
   font-family: var(--font-body);
   padding: clamp(40px, 8vw, 70px);
   margin: var(--spacing-xl) auto;
-  border: 2px solid #d4a99f;
+  border: 2px solid #d4a89d;
   border-radius: var(--radius-lg);
   max-width: 800px;
   position: relative;
@@ -16,32 +16,33 @@ div.lether {
   animation: cartaDesdeSobre 1.6s ease-out;
   transform: perspective(1000px) rotateX(0deg);
   transition: all var(--transition-base);
-  /* Efecto elegante de papel rayado de cuaderno pautado */
+  
+  /* ===== EFECTO DE PAPEL PAUTADO REALISTA ===== */
+  /* Basado en libretas escolares reales como la imagen de referencia */
   background-image: 
-    /* Línea vertical roja a la izquierda (margen de libreta) - más gruesa y visible */
+    /* MARGEN IZQUIERDO: Línea roja vertical - como en cuadernos escolares */
     linear-gradient(
       90deg,
-      #d97f77 0px,
-      #d97f77 3px,
-      transparent 3px,
-      transparent 50px,
-      #d97f77 50px,
-      #d97f77 53px,
-      transparent 53px,
+      transparent 0px,
+      transparent 18px,
+      #da4c4c 18px,
+      #da4c4c 21px,
+      transparent 21px,
       transparent 100%
     ),
-    /* Líneas horizontales (pauta clara y visible como en un cuaderno) */
+    /* LÍNEAS PAUTADAS: Azules horizontales claras - como renglón de cuaderno */
     repeating-linear-gradient(
       0deg,
       transparent 0px,
-      transparent 34px,
-      #d9a89d 34px,
-      #d9a89d 35px,
-      transparent 35px,
-      transparent 36px
+      transparent 27px,
+      #4a90e2 27px,
+      #4a90e2 28px,
+      transparent 28px,
+      transparent 56px
     ),
-    /* Fondo base blanco cálido */
-    linear-gradient(135deg, #fffdfb, #faf8f4);
+    /* Fondo blanco base */
+    linear-gradient(135deg, #ffffff, #faf9f7);
+  
   background-size: 
     100% 100%,
     100% 100%,
@@ -473,6 +474,73 @@ img.img-card:hover {
     opacity: 1;
     transform: translateY(0px);
   }
+}
+
+/* ============ Carousel para Cartas Especiales ============ */
+.carousel-special {
+  margin-top: var(--spacing-xl);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(45, 36, 32, 0.2);
+}
+
+.carousel-special .carousel-inner {
+  border-radius: var(--radius-lg);
+  background-color: #f5f5f5;
+}
+
+.carousel-img {
+  width: 100% !important;
+  height: auto !important;
+  max-height: 600px !important;
+  object-fit: contain !important;
+  display: block !important;
+}
+
+.carousel-special .carousel-control-prev,
+.carousel-special .carousel-control-next {
+  background-color: rgba(212, 103, 143, 0.3);
+  width: 45px;
+  border-radius: 50%;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 0.7;
+  transition: all var(--transition-base);
+}
+
+.carousel-special .carousel-control-prev {
+  left: 15px;
+}
+
+.carousel-special .carousel-control-next {
+  right: 15px;
+}
+
+.carousel-special .carousel-control-prev:hover,
+.carousel-special .carousel-control-next:hover {
+  background-color: rgba(212, 103, 143, 0.6);
+  opacity: 1;
+}
+
+.carousel-special .carousel-indicators {
+  bottom: 15px;
+  gap: 8px;
+}
+
+.carousel-special .carousel-indicators [data-bs-target] {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: rgba(212, 103, 143, 0.4);
+  border: none;
+  transition: all var(--transition-base);
+}
+
+.carousel-special .carousel-indicators .active {
+  background-color: var(--primary-rose);
+  width: 12px;
+  height: 12px;
+  margin: -1px;
 }
 
 /* ============ Responsive Design ============ */

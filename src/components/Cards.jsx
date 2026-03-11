@@ -1,6 +1,7 @@
 import "../styles/Cards.css";
 import Container from "react-bootstrap/Container";
 import Dropdown from "react-bootstrap/Dropdown";
+import Carousel from "react-bootstrap/Carousel";
 import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import LoadingScreen from "./LoadingScreen";
@@ -21,6 +22,7 @@ export default function Cards() {
   const [showLetterBody, setShowLetterBody] = useState(false);
   const [skipAnimation, setSkipAnimation] = useState(false);
   const [imageError, setImageError] = useState(false);
+  const [showCarousel, setShowCarousel] = useState(false);
   const navigate = useNavigate();
 
   const carta = cartas.find((c) => c.id === selectedId);
@@ -99,10 +101,16 @@ export default function Cards() {
     let i = 0;
     setDisplayedWords([]);
     setImagenVisible(false);
+    setShowCarousel(false);
 
     if (skipAnimation) {
       setDisplayedWords(texto);
-      setTimeout(() => setImagenVisible(true), 100);
+      setTimeout(() => {
+        setImagenVisible(true);
+        if (carta?.special && carta?.images) {
+          setShowCarousel(true);
+        }
+      }, 100);
       return;
     }
 
@@ -111,7 +119,12 @@ export default function Cards() {
       setDisplayedWords(texto.slice(0, i));
       if (i === texto.length) {
         clearInterval(interval);
-        setTimeout(() => setImagenVisible(true), 300);
+        setTimeout(() => {
+          setImagenVisible(true);
+          if (carta?.special && carta?.images) {
+            setShowCarousel(true);
+          }
+        }, 300);
       }
     }, 35);
 
@@ -125,6 +138,8 @@ export default function Cards() {
     setDisplayedWords([]);
     setDisplayedWordsTitle([]);
     setImageError(false);
+    setShowCarousel(false);
+    setSkipAnimation(false);
     setSelectedId(id);
     setAnimationKey((prev) => prev + 1);
   }
@@ -242,7 +257,8 @@ export default function Cards() {
           </p>
 
           {/* Image with fade-in animation */}
-          {imagenVisible && carta?.img && (
+          {/* Carta normal - Una imagen */}
+          {!carta?.special && imagenVisible && carta?.img && (
             <div className="d-flex justify-content-center fade-in-img">
               <img
                 className="img-card"
@@ -258,8 +274,31 @@ export default function Cards() {
             </div>
           )}
 
+          {/* Carrusel para cartas especiales - Múltiples imágenes */}
+          {carta?.special && showCarousel && carta?.images && carta.images.length > 0 && (
+            <div className="mt-4 fade-in-img">
+              <Carousel fade interval={4000} className="carousel-special">
+                {carta.images.map((imageUri, i) => {
+                  const imgUrl = imageUri?.startsWith("http")
+                    ? imageUri
+                    : `${backendUrl}${imageUri || ""}`;
+                  return (
+                    <Carousel.Item key={i}>
+                      <img
+                        className="d-block w-100 carousel-img"
+                        src={imgUrl}
+                        alt={`Foto ${i + 1} de la carta`}
+                        onError={() => console.error(`Error loading carousel image: ${imgUrl}`)}
+                      />
+                    </Carousel.Item>
+                  );
+                })}
+              </Carousel>
+            </div>
+          )}
+
           {/* Image Error Message */}
-          {imagenVisible && carta?.img && imageError && (
+          {imagenVisible && carta?.img && imageError && !carta?.special && (
             <div
               style={{
                 marginTop: "var(--spacing-lg)",
