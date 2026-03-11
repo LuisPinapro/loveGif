@@ -1,200 +1,428 @@
+/* ============ Letter/Card Styles ============ */
 div.lether {
-    background: url('https://www.transparenttextures.com/patterns/old-wall.png');
-    background-size: cover;
-    color: #3b2f2f;
-    font-family: 'Dancing Script', cursive;
-    padding: 60px 40px;
-    margin: 40px auto;
-    border: 8px solid #d4af37;
-    border-image: linear-gradient(to bottom, #d4af37, #a97c50, #d4af37) 1;
-    border-radius: 15px;
-    max-width: 850px;
-    box-shadow: 10px 10px 25px rgba(0,0,0,0.3);
-    transform-origin: top center;
-}
-
-h1.title {
-    font-size: 3em;
-    text-align: center;
-    margin-bottom: 10px;
-    font-family: 'Great Vibes', cursive;
-}
-
-p.line {
-    border-top: 1px dashed #d4af37;
-    margin: 20px 0;
-}
-
-p.content {
-    font-size: 1.4em;
-    line-height: 1.8em;
-    white-space: pre-line;
-}
-
-img.img-card {
-  margin-top: 30px;
-  border-radius: 15px;
-  height: auto;
-  max-height: none; /* permite su altura natural */
-  width: auto;
-  max-width: 100%; /* no desborda en horizontal */
-  object-fit: contain;
-}
-
-#dropdown1 {
-    background-color: #fce6c9; /* color crema */
-    color: #4b3832;
-    font-family: 'Dancing Script', cursive;
-    font-size: 1.4em;
-    border: 2px solid #d4af37;
-    border-radius: 12px;
-    padding: 8px 20px;
-    box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
-    transition: all 0.3s ease-in-out;
-    margin-bottom: 20px;
-}
-
-#dropdown1:hover,
-#dropdown1:focus {
-    background-color: #ffe9b3;
-    color: #4b3832;
-    border-color: #b38600;
-}
-
-.dropdown-wrapper {
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
-  margin-bottom: 20px;
-}
-/*
-@keyframes abrirPergamino {
-    0% {
-        transform: scaleY(0.1);
-        opacity: 0;
-    }
-    50% {
-        transform: scaleY(1.05);
-        opacity: 0.5;
-    }
-    100% {
-        transform: scaleY(1);
-        opacity: 1;
-    }
-}*/
-.envelope {
+  /* Papel blanco con textura */
+  background-color: #ffffff;
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  padding: clamp(40px, 8vw, 70px);
+  margin: var(--spacing-xl) auto;
+  border: 2px solid #d4a89d;
+  border-radius: var(--radius-lg);
+  max-width: 800px;
   position: relative;
-  width: 300px;
-  height: 200px;
-  margin: 0 auto 40px;
-  perspective: 800px;
-  animation: mostrarSobre 1.4s ease-in-out forwards;
+  box-shadow: 
+    0 10px 30px rgba(45, 36, 32, 0.15),
+    0 1px 3px rgba(212, 103, 143, 0.3) inset;
+  animation: cartaDesdeSobre 1.6s ease-out;
+  transform: perspective(1000px) rotateX(0deg);
+  transition: all var(--transition-base);
+  
+  /* ===== EFECTO DE PAPEL PAUTADO REALISTA ===== */
+  /* Basado en libretas escolares reales como la imagen de referencia */
+  background-image: 
+    /* MARGEN IZQUIERDO: Línea roja vertical - como en cuadernos escolares */
+    linear-gradient(
+      90deg,
+      transparent 0px,
+      transparent 18px,
+      #da4c4c 18px,
+      #da4c4c 21px,
+      transparent 21px,
+      transparent 100%
+    ),
+    /* LÍNEAS PAUTADAS: Azules horizontales claras - como renglón de cuaderno */
+    repeating-linear-gradient(
+      0deg,
+      transparent 0px,
+      transparent 27px,
+      #4a90e2 27px,
+      #4a90e2 28px,
+      transparent 28px,
+      transparent 56px
+    ),
+    /* Fondo blanco base */
+    linear-gradient(135deg, #ffffff, #faf9f7);
+  
+  background-size: 
+    100% 100%,
+    100% 100%,
+    100% 100%;
+  background-position: 
+    0 0,
+    0 0,
+    0 0;
+  background-attachment: 
+    local,
+    local,
+    local;
 }
 
-.flap {
+div.lether::before {
+  content: '';
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: #d4af37;
-  transform-origin: bottom;
-  animation: openFlap 1.4s ease-in-out forwards;
+  top: -8px;
+  left: -8px;
+  right: -8px;
+  bottom: -8px;
+  background: linear-gradient(135deg, var(--primary-rose) 0%, var(--secondary-burgundy) 100%);
+  z-index: -1;
+  border-radius: var(--radius-lg);
+  filter: blur(8px);
+  opacity: 0.15;
+}
+
+div.lether::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: 
+    radial-gradient(circle at 20% 50%, rgba(212, 103, 143, 0.05) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(139, 58, 90, 0.03) 0%, transparent 50%);
+  border-radius: var(--radius-lg);
+  pointer-events: none;
+}
+
+/* Title in Letter */
+h1.title {
+  font-size: clamp(2rem, 6vw, 2.8em);
+  text-align: center;
+  margin-bottom: 8px;
+  margin-top: 0;
+  font-family: var(--font-serif);
+  font-weight: 400;
+  color: var(--primary-rose-dark);
+  letter-spacing: 1px;
+  text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
+  position: relative;
+  z-index: 1;
+}
+
+/* Decorative Line */
+p.line {
+  border-top: 2px solid var(--primary-rose);
+  margin: var(--spacing-lg) auto;
+  opacity: 0.4;
+  width: 80%;
+  position: relative;
+  z-index: 1;
+}
+
+/* Letter Content */
+p.content {
+  font-size: clamp(1.1rem, 2.5vw, 1.45em);
+  line-height: 1.95;
+  white-space: pre-line;
+  word-wrap: break-word;
+  color: var(--text-primary);
+  position: relative;
+  z-index: 1;
+  text-align: justify;
+  font-family: var(--font-body);
+  font-weight: 400;
+}
+
+/* Typing Cursor */
+span.cursor {
+  display: inline-block;
+  width: 10px;
+  height: 0.9em;
+  background: linear-gradient(90deg, var(--primary-rose), var(--primary-rose-light));
+  margin-left: 2px;
+  animation: parpadeo 1s steps(2, start) infinite;
+  position: relative;
   z-index: 2;
 }
 
-.body {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: #fff8dc;
+/* Image in Card */
+img.img-card {
+  margin-top: var(--spacing-xl);
+  border-radius: var(--radius-lg);
+  border: 3px solid var(--primary-rose);
+  height: auto;
+  width: auto;
+  max-width: 100%;
+  max-height: 500px;
+  object-fit: contain;
+  box-shadow: 0 8px 20px rgba(45, 36, 32, 0.2);
+  transition: transform var(--transition-base), box-shadow var(--transition-base);
+  position: relative;
   z-index: 1;
-  border: 2px solid #d4af37;
-  border-radius: 8px;
+  display: block;
 }
 
-/* Animación al mostrar el sobre */
-@keyframes mostrarSobre {
-  from {
-    opacity: 0;
-    transform: scale(0.9);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
+img.img-card:hover {
+  transform: scale(1.02) translateY(-3px);
+  box-shadow: 0 12px 28px rgba(212, 103, 143, 0.3);
 }
 
-/* Animación de abrir la tapa */
-@keyframes openFlap {
-  0% {
-    transform: rotateX(0deg);
-  }
-  100% {
-    transform: rotateX(-90deg);
-  }
-}
-
-/* Animación de aparición de carta */
-.carta-animada {
-  animation: salirDeSobreSuave 1.6s ease-in-out;
-}
-
-@keyframes salirDeSobreSuave {
-  0% {
-    transform: translateY(150px) scale(0.9);
-    opacity: 0;
-  }
-  100% {
-    transform: translateY(0px) scale(1);
-    opacity: 1;
-  }
-}
-
-/* === NUEVO SOBRE VISUAL === */
+/* ============ Envelope Styles ============ */
 .envelope {
   position: relative;
-  width: 320px;
+  width: clamp(250px, 70vw, 320px);
   height: 200px;
-  margin: 0 auto 40px;
+  margin: 0 auto var(--spacing-xl);
   perspective: 1000px;
   animation: sobreAparece 1.5s ease-in-out;
+  filter: drop-shadow(0 10px 20px rgba(45, 36, 32, 0.2));
 }
 
+/* Envelope Flap */
 .flap {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 50%;
-  background: #a97c50;
+  background: linear-gradient(135deg, var(--primary-rose), var(--primary-rose-dark));
   transform-origin: top;
   animation: flapAbre 1.4s ease-in-out forwards;
   z-index: 3;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
+  box-shadow: inset 0 -2px 5px rgba(255, 255, 255, 0.4);
 }
 
+/* Envelope Body */
 .body {
   position: absolute;
   bottom: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: #fff8dc;
-  border: 2px solid #d4af37;
+  background: linear-gradient(to bottom, #fffbf7, #faf8f4);
+  border: 2px solid var(--border-color);
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
   z-index: 1;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.08);
 }
 
-/* Nueva animación de carta apareciendo */
-.carta-animada {
-  animation: cartaDesdeSobre 1.6s ease-out;
+/* ============ Dropdown Styles ============ */
+.dropdown-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  gap: var(--spacing-md);
+  margin-top: var(--spacing-lg);
+  margin-bottom: var(--spacing-lg);
+  flex-wrap: wrap;
+  padding: 0 var(--spacing-md);
 }
 
+/* Dropdown Component Container */
+.dropdown-wrapper .dropdown {
+  display: flex;
+  align-items: stretch;
+}
+
+/* Dropdown Toggle Button */
+#dropdown1 {
+  background: linear-gradient(135deg, #fde4ec, #f8bbd0);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: clamp(0.95rem, 2vw, 1.3em);
+  border: 2px solid var(--primary-rose);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-sm) var(--spacing-md);
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-base);
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  white-space: nowrap;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#dropdown1:hover:not(:disabled) {
+  background: linear-gradient(135deg, var(--primary-rose-light), #f8bbd0);
+  border-color: var(--primary-rose-dark);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+#dropdown1:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: var(--shadow-sm);
+}
+
+#dropdown1:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Dropdown Menu Items */
+.dropdown-menu {
+  border: 2px solid var(--primary-rose) !important;
+  border-radius: var(--radius-md) !important;
+  box-shadow: var(--shadow-md) !important;
+  background-color: #fffbf7 !important;
+  font-family: var(--font-body) !important;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.dropdown-item {
+  color: var(--text-primary) !important;
+  padding: var(--spacing-sm) var(--spacing-md) !important;
+  transition: all var(--transition-fast) !important;
+  font-size: 1rem !important;
+  white-space: normal;
+  word-wrap: break-word;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dropdown-item:hover:not(:disabled) {
+  background-color: #f8bbd0 !important;
+  color: var(--primary-rose-dark) !important;
+}
+
+.dropdown-item:focus {
+  background-color: var(--primary-rose-light) !important;
+  color: var(--primary-rose-dark) !important;
+}
+
+.dropdown-item:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ============ Write Letter Button ============ */
+.boton-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  padding: 0;
+  margin: 0;
+}
+
+.boton-escribir {
+  background: linear-gradient(135deg, var(--primary-rose), var(--primary-rose-dark));
+  color: white;
+  border: none;
+  font-family: var(--font-body);
+  padding: var(--spacing-sm) var(--spacing-lg);
+  border-radius: var(--radius-md);
+  font-size: clamp(0.95rem, 2vw, 1.2em);
+  cursor: pointer;
+  box-shadow: var(--shadow-md);
+  transition: all var(--transition-base);
+  font-weight: bold;
+  letter-spacing: 0.3px;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+}
+
+.boton-escribir:hover {
+  background: linear-gradient(135deg, var(--primary-rose-dark), var(--secondary-burgundy));
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-2px);
+}
+
+.boton-escribir:active {
+  transform: translateY(0);
+  box-shadow: var(--shadow-sm);
+}
+
+.boton-escribir:focus-visible {
+  outline: 3px solid var(--primary-rose);
+  outline-offset: 2px;
+}
+
+/* Skip Animation Button */
+.skip-animation-btn {
+  background: linear-gradient(135deg, rgba(232, 148, 159, 0.95), rgba(212, 103, 143, 0.9));
+  color: white;
+  border: 2px solid var(--primary-rose-dark);
+  padding: var(--spacing-xs) var(--spacing-md);
+  border-radius: var(--radius-sm);
+  font-size: clamp(0.8rem, 1.5vw, 0.95rem);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  position: absolute;
+  top: var(--spacing-lg);
+  right: var(--spacing-lg);
+  font-family: var(--font-body);
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(212, 103, 143, 0.3);
+  z-index: 10;
+  white-space: nowrap;
+}
+
+.skip-animation-btn:hover {
+  background: linear-gradient(135deg, var(--primary-rose-dark), var(--secondary-burgundy));
+  color: white;
+  border-color: var(--secondary-burgundy);
+  box-shadow: 0 6px 16px rgba(212, 103, 143, 0.4);
+  transform: translateY(-2px);
+}
+
+.skip-animation-btn:active {
+  background: linear-gradient(135deg, var(--secondary-burgundy), #6b2e45);
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(212, 103, 143, 0.3);
+}
+
+/* Skip Button Inline (Next to Back Button) */
+.skip-button-inline {
+  background: linear-gradient(135deg, #f8bbd0, #f48fb1);
+  color: var(--text-primary);
+  border: 2px solid var(--primary-rose);
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--radius-md);
+  font-size: clamp(0.9rem, 2vw, 1rem);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  font-family: var(--font-body);
+  font-weight: 600;
+  box-shadow: var(--shadow-md);
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  letter-spacing: 0.3px;
+}
+
+.skip-button-inline:hover {
+  background: linear-gradient(135deg, var(--primary-rose-light), var(--primary-rose));
+  border-color: var(--primary-rose-dark);
+  color: white;
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-2px);
+}
+
+.skip-button-inline:active {
+  transform: translateY(0);
+  box-shadow: var(--shadow-sm);
+}
+
+.skip-button-inline:focus-visible {
+  outline: 3px solid var(--primary-rose-dark);
+  outline-offset: 2px;
+}
+
+/* ============ Animations ============ */
+
+/* Envelope Appearance */
+@keyframes sobreAparece {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Flap Opening */
 @keyframes flapAbre {
   0% {
     transform: rotateX(0deg);
@@ -204,17 +432,7 @@ img.img-card {
   }
 }
 
-@keyframes sobreAparece {
-  0% {
-    opacity: 0;
-    transform: scale(0.9);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
+/* Letter Emerging from Envelope */
 @keyframes cartaDesdeSobre {
   0% {
     transform: translateY(150px) scale(0.95);
@@ -230,39 +448,17 @@ img.img-card {
   }
 }
 
-/* Animación de carta saliendo del sobre */
-.carta-animada {
-  animation: cartaDesdeSobre 1.6s ease-out;
-  position: relative;
-}
-
-@keyframes cartaDesdeSobre {
-  0% {
-    transform: translateY(150px) scale(0.95);
-    opacity: 0;
-  }
-  60% {
-    transform: translateY(30px) scale(1);
-    opacity: 0.7;
-  }
-  100% {
-    transform: translateY(0px);
-    opacity: 1;
-  }
-}
-
-/* Animación de escritura */
-.cursor {
-  display: inline-block;
-  width: 10px;
-  animation: parpadeo 1s steps(2, start) infinite;
-}
-
+/* Blinking Cursor */
 @keyframes parpadeo {
-  0%, 100% { opacity: 0; }
-  50% { opacity: 1; }
+  0%, 100% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
 }
-/* Animación de imagen deslizándose hacia arriba */
+
+/* Image Fade and Slide */
 .fade-in-img {
   animation: fadeInSlide 1.2s ease-out forwards;
   opacity: 0;
@@ -280,29 +476,174 @@ img.img-card {
   }
 }
 
-/* Estilo del boton escribir carta */
-.boton-wrapper {
-  display: flex;
-  justify-content: flex-end;
-  padding-right: 20px;
-  margin-bottom: 20px;
+/* ============ Carousel para Cartas Especiales ============ */
+.carousel-special {
+  margin-top: var(--spacing-xl);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(45, 36, 32, 0.2);
 }
 
-.boton-escribir {
-  background-color: #d4af37;
-  color: white;
+.carousel-special .carousel-inner {
+  border-radius: var(--radius-lg);
+  background-color: #f5f5f5;
+}
+
+.carousel-img {
+  width: 100% !important;
+  height: auto !important;
+  max-height: 600px !important;
+  object-fit: contain !important;
+  display: block !important;
+}
+
+.carousel-special .carousel-control-prev,
+.carousel-special .carousel-control-next {
+  background-color: rgba(212, 103, 143, 0.3);
+  width: 45px;
+  border-radius: 50%;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 0.7;
+  transition: all var(--transition-base);
+}
+
+.carousel-special .carousel-control-prev {
+  left: 15px;
+}
+
+.carousel-special .carousel-control-next {
+  right: 15px;
+}
+
+.carousel-special .carousel-control-prev:hover,
+.carousel-special .carousel-control-next:hover {
+  background-color: rgba(212, 103, 143, 0.6);
+  opacity: 1;
+}
+
+.carousel-special .carousel-indicators {
+  bottom: 15px;
+  gap: 8px;
+}
+
+.carousel-special .carousel-indicators [data-bs-target] {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: rgba(212, 103, 143, 0.4);
   border: none;
-  font-family: 'Dancing Script', cursive;
-  padding: 10px 20px;
-  border-radius: 12px;
-  font-size: 1.3em;
-  cursor: pointer;
-  box-shadow: 2px 2px 10px rgba(0,0,0,0.2);
-  transition: background 0.3s ease;
+  transition: all var(--transition-base);
 }
 
-.boton-escribir:hover {
-  background-color: #b99445;
+.carousel-special .carousel-indicators .active {
+  background-color: var(--primary-rose);
+  width: 12px;
+  height: 12px;
+  margin: -1px;
+}
+
+/* ============ Responsive Design ============ */
+@media (max-width: 768px) {
+  div.lether {
+    padding: var(--spacing-lg);
+    margin: var(--spacing-lg) var(--spacing-md);
+  }
+
+  h1.title {
+    font-size: 1.8rem;
+    margin-bottom: 6px;
+  }
+
+  p.content {
+    font-size: 1rem;
+  }
+
+  .skip-animation-btn {
+    top: var(--spacing-md);
+    right: var(--spacing-md);
+    font-size: 0.8rem;
+  }
+
+  .dropdown-wrapper {
+    gap: var(--spacing-sm);
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+  }
+
+  #dropdown1 {
+    font-size: 1rem;
+    padding: 10px 16px;
+    width: 100%;
+  }
+
+  .boton-escribir {
+    width: 100%;
+  }
+
+  .dropdown-menu {
+    width: 100% !important;
+  }
+}
+
+@media (max-width: 480px) {
+  div.lether {
+    padding: var(--spacing-md);
+    margin: var(--spacing-lg) var(--spacing-sm);
+    border-width: 2px;
+  }
+
+  div.lether::before {
+    filter: blur(4px);
+  }
+
+  h1.title {
+    font-size: 1.4rem;
+    margin-bottom: 6px;
+  }
+
+  p.content {
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+
+  img.img-card {
+    max-height: 300px;
+    margin-top: var(--spacing-lg);
+  }
+
+  .dropdown-wrapper {
+    flex-direction: column;
+    width: 100%;
+    padding: 0 var(--spacing-sm);
+    gap: var(--spacing-sm);
+  }
+
+  #dropdown1 {
+    width: 100%;
+    font-size: 0.95rem;
+    padding: 10px 12px;
+  }
+
+  .boton-escribir {
+    width: 100%;
+    padding: var(--spacing-sm) var(--spacing-md);
+    font-size: 0.95rem;
+  }
+
+  .envelope {
+    width: 85vw;
+    height: 160px;
+  }
+
+  .skip-animation-btn {
+    top: var(--spacing-sm);
+    right: var(--spacing-sm);
+    padding: 6px 10px;
+    font-size: 0.75rem;
+    font-weight: bold;
+  }
 }
 
 .foto-lateral {
