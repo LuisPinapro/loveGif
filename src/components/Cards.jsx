@@ -239,7 +239,6 @@ export default function Cards() {
         <article
           className="lether carta-animada"
           key={`carta-${animationKey}`}
-          role="article"
           aria-label={`Contenido de la carta: ${displayedWordsTitle}`}
         >
 
