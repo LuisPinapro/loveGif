@@ -4,7 +4,7 @@ div.lether {
   background-color: #fefefe;
   color: var(--text-primary);
   font-family: var(--font-body);
-  padding: 40px 40px 40px 70px;
+  padding: 35px 35px 35px 65px;
   margin: var(--spacing-xl) auto;
   border: 2px solid #d4a89d;
   border-radius: var(--radius-lg);
@@ -13,74 +13,42 @@ div.lether {
   box-shadow: 
     0 10px 30px rgba(45, 36, 32, 0.15),
     0 1px 3px rgba(212, 103, 143, 0.3) inset;
-  animation: cartaDesdeSobre 1.6s ease-out;
+  animation: cartaDesdeSobre 1.3s ease-out;
   transform: perspective(1000px) rotateX(0deg);
   transition: all var(--transition-base);
   
-  /* ===== EFECTO DE PAPEL PAUTADO REALISTA - MEJORADO ===== */
+  /* ===== EFECTO DE PAPEL PAUTADO REALISTA ===== */
   background-image: 
-    /* MARGEN IZQUIERDO ROJO - Línea roja clara y visible */
-    linear-gradient(
-      to right,
-      transparent 0%,
-      transparent calc(100% - 100vw + 40px - 20px),
-      #e74c3c calc(100% - 100vw + 40px - 20px),
-      #e74c3c calc(100% - 100vw + 40px - 15px),
-      transparent calc(100% - 100vw + 40px - 15px),
-      transparent 100%
-    ),
-    /* LÍNEAS PAUTADAS - Agrupadas cada 25px para simular cuaderno */
+    /* Líneas horizontales azules de cuaderno - línea cada 26px */
     repeating-linear-gradient(
       to bottom,
-      transparent 0px,
-      transparent 24px,
-      #5b9bd5 24px,
-      #5b9bd5 25px,
+      transparent 0,
       transparent 25px,
-      transparent 50px
+      #4a90e2 25px,
+      #4a90e2 26px,
+      transparent 26px,
+      transparent 52px
     ),
-    /* Líneas de puntos más claras entre las principales */
-    repeating-linear-gradient(
-      to bottom,
-      transparent 0px,
-      transparent 49px,
-      #dae3f3 49px,
-      #dae3f3 50px
-    ),
-    /* Fondo con textura de papel */
-    linear-gradient(135deg, #ffffff 0%, #fdfcfb 50%, #faf8f5 100%);
+    /* Fondo blanco con textura */
+    linear-gradient(180deg, #ffffff 0%, #fdfcfb 100%);
   
-  background-size: 
-    100% 100%,
-    100% 100%,
-    100% 100%,
-    100% 100%;
-  background-position: 
-    0 0,
-    0 0,
-    0 0,
-    0 0;
-  background-attachment: 
-    fixed,
-    local,
-    local,
-    local;
-  
-  background-repeat: repeat-y, repeat, repeat, repeat;
-  background-clip: padding-box, padding-box, padding-box, padding-box;
+  background-size: 100% 52px, 100% 100%;
+  background-position: 0 0, 0 0;
+  background-attachment: local, local;
+  background-repeat: repeat, no-repeat;
+  background-clip: padding-box, padding-box;
 }
 
 div.lether::before {
   content: '';
   position: absolute;
   top: 0;
-  left: 40px;
-  width: 25px;
+  left: 45px;
+  width: 3px;
   bottom: 0;
-  background: transparent;
-  border-right: 4px solid #e74c3c;
-  z-index: 0;
-  opacity: 0.9;
+  background: #e74c3c;
+  z-index: 2;
+  opacity: 0.95;
 }
 
 div.lether::after {
@@ -98,7 +66,7 @@ div.lether::after {
 /* Title in Letter */
 h1.title {
   font-size: clamp(2rem, 6vw, 2.8em);
-  text-align: left;
+  text-align: center;
   margin-bottom: 8px;
   margin-top: 0;
   margin-left: 0;
@@ -172,12 +140,12 @@ img.img-card:hover {
 /* ============ Envelope Styles ============ */
 .envelope {
   position: relative;
-  width: clamp(250px, 70vw, 320px);
-  height: 200px;
+  width: clamp(180px, 40vw, 250px);
+  height: 150px;
   margin: 0 auto var(--spacing-xl);
   perspective: 1000px;
-  animation: sobreAparece 1.5s ease-in-out;
-  filter: drop-shadow(0 10px 20px rgba(45, 36, 32, 0.2));
+  animation: sobreAparece 1.2s ease-out;
+  filter: drop-shadow(0 8px 16px rgba(45, 36, 32, 0.18));
 }
 
 /* Envelope Flap */
@@ -449,15 +417,15 @@ img.img-card:hover {
 /* Letter Emerging from Envelope */
 @keyframes cartaDesdeSobre {
   0% {
-    transform: translateY(150px) scale(0.95);
+    transform: translateY(60px) scale(0.92);
     opacity: 0;
   }
-  60% {
-    transform: translateY(30px) scale(1);
-    opacity: 0.7;
+  70% {
+    transform: translateY(-10px) scale(1.01);
+    opacity: 0.95;
   }
   100% {
-    transform: translateY(0px);
+    transform: translateY(0px) scale(1);
     opacity: 1;
   }
 }
