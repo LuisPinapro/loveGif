@@ -4,7 +4,7 @@ div.lether {
   background-color: #fefefe;
   color: var(--text-primary);
   font-family: var(--font-body);
-  padding: 35px 35px 35px 65px;
+  padding: 30px 40px 35px 65px;
   margin: var(--spacing-xl) auto;
   border: 2px solid #d4a89d;
   border-radius: var(--radius-lg);
@@ -33,7 +33,7 @@ div.lether {
     linear-gradient(180deg, #ffffff 0%, #fdfcfb 100%);
   
   background-size: 100% 52px, 100% 100%;
-  background-position: 0 0, 0 0;
+  background-position: 0 30px, 0 0;
   background-attachment: local, local;
   background-repeat: repeat, no-repeat;
   background-clip: padding-box, padding-box;
@@ -42,7 +42,7 @@ div.lether {
 div.lether::before {
   content: '';
   position: absolute;
-  top: 0;
+  top: 30px;
   left: 45px;
   width: 3px;
   bottom: 0;
@@ -89,18 +89,34 @@ p.line {
   z-index: 1;
 }
 
-/* Letter Content */
+/* Letter Content - Aligned with ruled lines */
 p.content {
-  font-size: clamp(1.1rem, 2.5vw, 1.45em);
-  line-height: 1.95;
-  white-space: pre-line;
+  font-size: 1.05rem;
+  line-height: 26px;
+  white-space: pre-wrap;
   word-wrap: break-word;
+  overflow-wrap: break-word;
   color: var(--text-primary);
   position: relative;
   z-index: 1;
-  text-align: justify;
+  text-align: left;
   font-family: var(--font-body);
   font-weight: 400;
+  margin-top: 0;
+  margin-bottom: var(--spacing-lg);
+  letter-spacing: 0.3px;
+  background: linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent 25px,
+    rgba(74, 144, 226, 0.08) 25px,
+    rgba(74, 144, 226, 0.08) 26px,
+    transparent 26px,
+    transparent 52px
+  );
+  background-position: 0 30px;
+  background-size: 100% 52px;
+  background-attachment: local;
 }
 
 /* Typing Cursor */
@@ -135,48 +151,6 @@ img.img-card {
 img.img-card:hover {
   transform: scale(1.02) translateY(-3px);
   box-shadow: 0 12px 28px rgba(212, 103, 143, 0.3);
-}
-
-/* ============ Envelope Styles ============ */
-.envelope {
-  position: relative;
-  width: clamp(180px, 40vw, 250px);
-  height: 150px;
-  margin: 0 auto var(--spacing-xl);
-  perspective: 1000px;
-  animation: sobreAparece 1.2s ease-out;
-  filter: drop-shadow(0 8px 16px rgba(45, 36, 32, 0.18));
-}
-
-/* Envelope Flap */
-.flap {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 50%;
-  background: linear-gradient(135deg, var(--primary-rose), var(--primary-rose-dark));
-  transform-origin: top;
-  animation: flapAbre 1.4s ease-in-out forwards;
-  z-index: 3;
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
-  box-shadow: inset 0 -2px 5px rgba(255, 255, 255, 0.4);
-}
-
-/* Envelope Body */
-.body {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(to bottom, #fffbf7, #faf8f4);
-  border: 2px solid var(--border-color);
-  border-bottom-left-radius: 10px;
-  border-bottom-right-radius: 10px;
-  z-index: 1;
-  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.08);
 }
 
 /* ============ Dropdown Styles ============ */
@@ -391,28 +365,6 @@ img.img-card:hover {
 }
 
 /* ============ Animations ============ */
-
-/* Envelope Appearance */
-@keyframes sobreAparece {
-  0% {
-    opacity: 0;
-    transform: scale(0.8);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-/* Flap Opening */
-@keyframes flapAbre {
-  0% {
-    transform: rotateX(0deg);
-  }
-  100% {
-    transform: rotateX(-150deg);
-  }
-}
 
 /* Letter Emerging from Envelope */
 @keyframes cartaDesdeSobre {

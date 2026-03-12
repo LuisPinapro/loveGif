@@ -1,0 +1,219 @@
+/**
+ * Animación realista y simple de sobre abriéndose
+ * Estructura básica: rectángulo + triángulo que se levanta
+ */
+
+.envelope-animation-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 350px;
+  padding: var(--spacing-xl) var(--spacing-md);
+  margin: var(--spacing-xl) auto;
+}
+
+/* ============ CONTENEDOR PRINCIPAL ============ */
+
+.envelope-container {
+  position: relative;
+  width: 200px;
+  height: 150px;
+  perspective: 1500px;
+}
+
+/* ============ CUERPO DEL SOBRE (Rectángulo) ============ */
+
+.envelope-body {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+
+.body-face {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(180deg, #fffbf7 0%, #faf8f4 100%);
+  border: 2.5px solid var(--primary-rose);
+  border-radius: 4px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  position: relative;
+  overflow: hidden;
+}
+
+.envelope-lines {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    repeating-linear-gradient(
+      to right,
+      transparent,
+      transparent 15px,
+      rgba(212, 103, 143, 0.05) 15px,
+      rgba(212, 103, 143, 0.05) 30px
+    );
+  pointer-events: none;
+}
+
+/* ============ SOLAPA SUPERIOR (Triángulo) ============ */
+
+.top-flap {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 0;
+  height: 0;
+  /* Crea triángulo con bordes */
+  border-left: 100px solid transparent;
+  border-right: 100px solid transparent;
+  border-top: 70px solid var(--primary-rose);
+  transform: translateX(-50%);
+  z-index: 5;
+  /* Bisagra en la parte superior */
+  transform-origin: top center;
+  animation: flapOpen 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  /* Sombra */
+  filter: drop-shadow(0 4px 12px rgba(45, 36, 32, 0.15));
+}
+
+.flap-content {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.flap-shine {
+  position: absolute;
+  top: 10%;
+  left: 20%;
+  width: 60%;
+  height: 20%;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.3), transparent);
+  border-radius: 50%;
+  filter: blur(4px);
+  pointer-events: none;
+}
+
+/* ============ CARTA INTERIOR ============ */
+
+.letter-inside {
+  position: absolute;
+  width: 85%;
+  height: 70%;
+  top: 25%;
+  left: 7.5%;
+  z-index: 3;
+  animation: letterPop 1.4s cubic-bezier(0.34, 1.56, 0.64, 1) 0.6s forwards;
+  opacity: 0;
+}
+
+.letter-paper {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #ffffff 0%, #fffbf7 100%);
+  border: 1px solid rgba(212, 103, 143, 0.3);
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(45, 36, 32, 0.1);
+  transform-style: preserve-3d;
+}
+
+.heart-icon {
+  font-size: 56px;
+  display: inline-block;
+  animation: heartBeat 0.8s ease-in-out 2s infinite;
+}
+
+/* ============ ANIMACIONES ============ */
+
+/* Solapa se abre (rota hacia atrás desde bisagra superior) */
+@keyframes flapOpen {
+  0% {
+    transform: translateX(-50%) rotateX(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(-50%) rotateX(-160deg);
+    opacity: 0.4;
+  }
+}
+
+/* Carta sale hacia arriba */
+@keyframes letterPop {
+  0% {
+    opacity: 0;
+    transform: translateY(30px) scale(0.85) rotateX(25deg);
+  }
+  60% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(-15px) scale(1) rotateX(0deg);
+  }
+}
+
+/* Latido del corazón */
+@keyframes heartBeat {
+  0%, 100% {
+    transform: scale(1);
+  }
+  14% {
+    transform: scale(1.2);
+  }
+  28% {
+    transform: scale(1);
+  }
+}
+
+/* ============ RESPONSIVE ============ */
+
+@media (max-width: 768px) {
+  .envelope-container {
+    width: 170px;
+    height: 130px;
+  }
+
+  .envelope-animation-wrapper {
+    min-height: 300px;
+  }
+
+  .top-flap {
+    border-left: 85px solid transparent;
+    border-right: 85px solid transparent;
+    border-top: 60px solid var(--primary-rose);
+  }
+
+  .heart-icon {
+    font-size: 44px;
+  }
+}
+
+@media (max-width: 480px) {
+  .envelope-container {
+    width: 140px;
+    height: 110px;
+  }
+
+  .envelope-animation-wrapper {
+    min-height: 260px;
+    padding: var(--spacing-lg) var(--spacing-sm);
+  }
+
+  .top-flap {
+    border-left: 70px solid transparent;
+    border-right: 70px solid transparent;
+    border-top: 50px solid var(--primary-rose);
+  }
+
+  .heart-icon {
+    font-size: 36px;
+  }
+}

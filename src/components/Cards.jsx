@@ -6,6 +6,9 @@ import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import WelcomeMessage from "./WelcomeMessage";
 import EnvelopeLoader from "./EnvelopeLoader";
+import EnvelopeAnimation from "./EnvelopeAnimation";
+import ImageWithRetry from "./ImageWithRetry";
+import { fetchWithRetry, fixGitHubUrl } from "../utils/fetchUtils";
 
 const backendUrl = "https://lovegifbackend.onrender.com";
 
@@ -15,7 +18,6 @@ export default function Cards() {
   const [showLetter, setShowLetter] = useState(false);
   const [displayedWords, setDisplayedWords] = useState([]);
   const [displayedWordsTitle, setDisplayedWordsTitle] = useState([]);
-  const envelopeRef = useRef(null);
   const [imagenVisible, setImagenVisible] = useState(false);
   const [cartas, setCartas] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -28,21 +30,27 @@ export default function Cards() {
 
   const carta = cartas.find((c) => c.id === selectedId);
   const imageUrl = carta?.img?.startsWith("http")
-    ? carta.img
+    ? fixGitHubUrl(carta.img)
     : `${backendUrl}${carta?.img || ""}`;
 
-  // Fetch cartas from backend
+  // Fetch cartas from backend with retry logic
   useEffect(() => {
     const fetchCartas = async () => {
       try {
         setLoading(true);
-        const response = await fetch("https://lovegifbackend.onrender.com/cartas");
-        if (!response.ok) throw new Error("Error fetching cartas");
+        const response = await fetchWithRetry(
+          "https://lovegifbackend.onrender.com/cartas",
+          {
+            retries: 4,
+            backoffMs: 800,
+            timeout: 8000,
+          }
+        );
         const data = await response.json();
         setCartas(data);
         setError(null);
       } catch (err) {
-        console.error(err);
+        console.error("Error fetching cartas:", err);
         setError("No se pudieron cargar las cartas. Intenta más tarde.");
       } finally {
         setLoading(false);
@@ -51,22 +59,10 @@ export default function Cards() {
     fetchCartas();
   }, []);
 
-  // Envelope animation handler
-  useEffect(() => {
-    if (!selectedId) return;
-
-    const envelope = envelopeRef.current;
-    if (!envelope) return;
-
-    const handleAnimationEnd = () => {
-      setShowLetter(true);
-    };
-
-    envelope.addEventListener("animationend", handleAnimationEnd);
-    return () => {
-      envelope.removeEventListener("animationend", handleAnimationEnd);
-    };
-  }, [animationKey, selectedId]);
+  // Envelope animation handler - triggers when animation ends
+  const handleEnvelopeAnimationEnd = () => {
+    setShowLetter(true);
+  };
 
   // Display title with typing effect
   useEffect(() => {
@@ -224,18 +220,9 @@ export default function Cards() {
         </div>
       )}
 
-      {/* Envelope Animation */}
+      {/* Envelope Animation - Compact and Elegant */}
       {selectedId && !showLetter && (
-        <div
-          className="envelope animacion-sobre"
-          key={`sobre-${animationKey}`}
-          ref={envelopeRef}
-          role="img"
-          aria-label="Sobre animado abriéndose"
-        >
-          <div className="flap" aria-hidden="true"></div>
-          <div className="body" aria-hidden="true"></div>
-        </div>
+        <EnvelopeAnimation onAnimationEnd={handleEnvelopeAnimationEnd} />
       )}
 
       {/* Letter Content */}
@@ -263,15 +250,15 @@ export default function Cards() {
           {/* Carta normal - Una imagen */}
           {!carta?.special && imagenVisible && carta?.img && (
             <div className="d-flex justify-content-center fade-in-img">
-              <img
+              <ImageWithRetry
                 className="img-card"
                 src={imageUrl}
                 alt={`Imagen de la carta: ${displayedWordsTitle}`}
-                loading="lazy"
-                onError={(e) => {
-                  console.error("Error loading image from:", imageUrl);
+                maxRetries={4}
+                retryDelay={800}
+                onError={(err) => {
+                  console.error("Error loading image after retries:", imageUrl, err);
                   setImageError(true);
-                  e.target.style.display = "none";
                 }}
               />
             </div>
@@ -283,15 +270,19 @@ export default function Cards() {
               <Carousel fade interval={4000} className="carousel-special">
                 {carta.images.map((imageUri, i) => {
                   const imgUrl = imageUri?.startsWith("http")
-                    ? imageUri
+                    ? fixGitHubUrl(imageUri)
                     : `${backendUrl}${imageUri || ""}`;
                   return (
                     <Carousel.Item key={i}>
-                      <img
+                      <ImageWithRetry
                         className="d-block w-100 carousel-img"
                         src={imgUrl}
                         alt={`Foto ${i + 1} de la carta`}
-                        onError={() => console.error(`Error loading carousel image: ${imgUrl}`)}
+                        maxRetries={4}
+                        retryDelay={800}
+                        onError={(err) => {
+                          console.error(`Error loading carousel image: ${imgUrl}`, err);
+                        }}
                       />
                     </Carousel.Item>
                   );
