@@ -1,10 +1,19 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { AuthProvider, useAuth } from "./context/AuthContext";
+import Login from "./components/Login";
 import Cards from "./components/Cards";
 import CartaForm from "./components/CartaForm";
 import Menu from "./components/Menu";
 
+function AppContent() {
+  const { user } = useAuth();
 
-export default function App() {
+  // Si no hay usuario autenticado, mostrar login
+  if (!user) {
+    return <Login />;
+  }
+
+  // Si hay usuario autenticado, mostrar la aplicación
   return (
     <Router>
       <Menu />
@@ -29,5 +38,13 @@ export default function App() {
         <p>Hecho con ❤️ por Piña | {new Date().getFullYear()}</p>
       </footer>
     </Router>
+  );
+}
+
+export default function App() {
+  return (
+    <AuthProvider>
+      <AppContent />
+    </AuthProvider>
   );
 }

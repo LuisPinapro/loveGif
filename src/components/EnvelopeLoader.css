@@ -1,0 +1,287 @@
+/* ============ Envelope Loader Styles ============ */
+
+.envelope-loader-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(212, 103, 143, 0.95) 0%, rgba(139, 58, 90, 0.95) 100%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.envelope-loader-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+}
+
+/* ========== CONTENEDOR DEL SOBRE ========== */
+.envelope-wrapper {
+  position: relative;
+  width: 280px;
+  height: 320px;
+  perspective: 1200px;
+}
+
+/* Contenedor de corazones animados */
+.hearts-container {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: 15px;
+  z-index: 2;
+}
+
+.heart {
+  position: absolute;
+  font-size: 2.5rem;
+  animation: floatUp var(--duration, 3s) ease-in forwards;
+  left: calc(50% + (var(--offset, 0px)));
+  opacity: 0.9;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+}
+
+.heart:nth-child(1) {
+  --offset: -80px;
+  animation-delay: var(--delay, 0s);
+}
+
+.heart:nth-child(2) {
+  --offset: 60px;
+  animation-delay: calc(var(--delay, 0s) + 0.3s);
+}
+
+.heart:nth-child(3) {
+  --offset: -40px;
+  animation-delay: calc(var(--delay, 0s) + 0.6s);
+}
+
+.heart:nth-child(4) {
+  --offset: 80px;
+  animation-delay: calc(var(--delay, 0s) + 0.9s);
+}
+
+.heart:nth-child(5) {
+  --offset: -60px;
+  animation-delay: calc(var(--delay, 0s) + 1.2s);
+}
+
+.heart:nth-child(6) {
+  --offset: 40px;
+  animation-delay: calc(var(--delay, 0s) + 1.5s);
+}
+
+@keyframes floatUp {
+  0% {
+    bottom: -50px;
+    opacity: 1;
+    transform: scale(1) rotateZ(0deg);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.1) rotateZ(10deg);
+  }
+  100% {
+    bottom: 100%;
+    opacity: 0;
+    transform: scale(0.8) rotateZ(-10deg);
+  }
+}
+
+/* ========== ESTRUCTURA DEL SOBRE ========== */
+.envelope {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 15px;
+  box-shadow: 0 20px 50px rgba(45, 36, 32, 0.4);
+  z-index: 1;
+  animation: envelopeFloat 2.5s ease-in-out infinite;
+  transform-origin: center;
+}
+
+@keyframes envelopeFloat {
+  0%, 100% {
+    transform: translateY(0px) rotateZ(0deg);
+  }
+  50% {
+    transform: translateY(-15px) rotateZ(2deg);
+  }
+}
+
+/* Solapa superior */
+.envelope-flap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 50%;
+  perspective: 1000px;
+}
+
+.flap-top {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  background: linear-gradient(135deg, #f5e6d3 0%, #f0dcc8 100%);
+  border: 2px solid #d4a89d;
+  border-bottom: none;
+  border-radius: 15px 15px 0 0;
+  box-shadow: 
+    inset 0 1px 0 rgba(255, 255, 255, 0.8),
+    inset 0 -2px 5px rgba(0, 0, 0, 0.05);
+}
+
+/* Triángulos de la solapa (efecto 3D) */
+.flap-triangle {
+  position: absolute;
+  width: 0;
+  height: 0;
+  bottom: 0;
+  border-left: 70px solid transparent;
+  border-right: 70px solid transparent;
+  border-bottom: 80px solid rgba(212, 103, 143, 0.1);
+  opacity: 0;
+}
+
+.flap-left {
+  left: -70px;
+}
+
+.flap-right {
+  right: -70px;
+}
+
+/* Cuerpo del sobre */
+.envelope-body {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 55%;
+  background: linear-gradient(135deg, #ffffff 0%, #faf9f7 100%);
+  border: 2px solid #d4a89d;
+  border-radius: 0 0 15px 15px;
+  box-shadow: 
+    0 5px 15px rgba(45, 36, 32, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+.envelope-front {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Sello decorativo */
+.stamp {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  width: 40px;
+  height: 50px;
+  background: linear-gradient(45deg, #d46a8f 0%, #8b3a5a 100%);
+  border: 2px dashed rgba(212, 103, 143, 0.5);
+  border-radius: 3px;
+  box-shadow: 0 3px 8px rgba(45, 36, 32, 0.2);
+  animation: stampFlip 2s ease-in-out infinite;
+}
+
+@keyframes stampFlip {
+  0%, 100% {
+    transform: rotateZ(-5deg);
+  }
+  50% {
+    transform: rotateZ(5deg);
+  }
+}
+
+/* Líneas de dirección */
+.address-lines {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-left: 10px;
+}
+
+.address-line {
+  height: 2px;
+  background: linear-gradient(90deg, #333 0%, #333 80%, transparent 100%);
+  border-radius: 1px;
+}
+
+.address-line:first-child {
+  width: 85%;
+}
+
+.address-line.short {
+  width: 60%;
+}
+
+/* ========== TEXTO DE CARGA ========== */
+.loading-text {
+  font-family: var(--font-serif);
+  font-size: 1.2rem;
+  color: white;
+  text-align: center;
+  letter-spacing: 1px;
+  animation: pulse 2s ease-in-out infinite;
+  margin: 0;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 0.7;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 600px) {
+  .envelope-wrapper {
+    width: 220px;
+    height: 250px;
+  }
+
+  .heart {
+    font-size: 1.8rem;
+  }
+
+  .stamp {
+    width: 30px;
+    height: 40px;
+    top: 10px;
+    right: 10px;
+  }
+
+  .loading-text {
+    font-size: 1rem;
+  }
+
+  .envelope-loader-container {
+    gap: 30px;
+  }
+}

@@ -5,6 +5,8 @@ import Carousel from "react-bootstrap/Carousel";
 import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import LoadingScreen from "./LoadingScreen";
+import WelcomeMessage from "./WelcomeMessage";
+import EnvelopeLoader from "./EnvelopeLoader";
 
 const backendUrl = "https://lovegifbackend.onrender.com";
 
@@ -146,8 +148,14 @@ export default function Cards() {
 
   return (
     <Container>
+      {/* Envelope Loader - Animación de corazones en sobre */}
+      <EnvelopeLoader isLoading={loading} />
+
       {/* Loading Screen */}
       {loading && <LoadingScreen />}
+
+      {/* Welcome Message - Mensaje personalizado por usuario */}
+      {!loading && !selectedId && <WelcomeMessage />}
 
       {/* Error State */}
       {error && (
