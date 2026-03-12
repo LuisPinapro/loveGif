@@ -62,9 +62,8 @@ export default function Login() {
         </form>
 
         <div className="login-footer">
-          <p>Usuarios de demostración:</p>
-          <small>LPINA / Luis2610</small>
-          <small>FLORY / 1234</small>
+          <p>Usuarios de demostración disponibles</p>
+          <small>Solicita acceso para más información</small>
         </div>
       </div>
     </div>

@@ -4,7 +4,6 @@ import Dropdown from "react-bootstrap/Dropdown";
 import Carousel from "react-bootstrap/Carousel";
 import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import LoadingScreen from "./LoadingScreen";
 import WelcomeMessage from "./WelcomeMessage";
 import EnvelopeLoader from "./EnvelopeLoader";
 
@@ -150,9 +149,6 @@ export default function Cards() {
     <Container>
       {/* Envelope Loader - Animación de corazones en sobre */}
       <EnvelopeLoader isLoading={loading} />
-
-      {/* Loading Screen */}
-      {loading && <LoadingScreen />}
 
       {/* Welcome Message - Mensaje personalizado por usuario */}
       {!loading && !selectedId && <WelcomeMessage />}

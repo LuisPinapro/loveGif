@@ -1,14 +1,14 @@
 /* ============ Letter/Card Styles ============ */
 div.lether {
   /* Papel blanco con textura */
-  background-color: #ffffff;
+  background-color: #fefefe;
   color: var(--text-primary);
   font-family: var(--font-body);
-  padding: clamp(40px, 8vw, 70px);
+  padding: 40px 40px 40px 70px;
   margin: var(--spacing-xl) auto;
   border: 2px solid #d4a89d;
   border-radius: var(--radius-lg);
-  max-width: 800px;
+  max-width: 850px;
   position: relative;
   box-shadow: 
     0 10px 30px rgba(45, 36, 32, 0.15),
@@ -17,58 +17,70 @@ div.lether {
   transform: perspective(1000px) rotateX(0deg);
   transition: all var(--transition-base);
   
-  /* ===== EFECTO DE PAPEL PAUTADO REALISTA ===== */
-  /* Basado en libretas escolares reales como la imagen de referencia */
+  /* ===== EFECTO DE PAPEL PAUTADO REALISTA - MEJORADO ===== */
   background-image: 
-    /* MARGEN IZQUIERDO: Línea roja vertical - como en cuadernos escolares */
+    /* MARGEN IZQUIERDO ROJO - Línea roja clara y visible */
     linear-gradient(
-      90deg,
-      transparent 0px,
-      transparent 18px,
-      #da4c4c 18px,
-      #da4c4c 21px,
-      transparent 21px,
+      to right,
+      transparent 0%,
+      transparent calc(100% - 100vw + 40px - 20px),
+      #e74c3c calc(100% - 100vw + 40px - 20px),
+      #e74c3c calc(100% - 100vw + 40px - 15px),
+      transparent calc(100% - 100vw + 40px - 15px),
       transparent 100%
     ),
-    /* LÍNEAS PAUTADAS: Azules horizontales claras - como renglón de cuaderno */
+    /* LÍNEAS PAUTADAS - Agrupadas cada 25px para simular cuaderno */
     repeating-linear-gradient(
-      0deg,
+      to bottom,
       transparent 0px,
-      transparent 27px,
-      #4a90e2 27px,
-      #4a90e2 28px,
-      transparent 28px,
-      transparent 56px
+      transparent 24px,
+      #5b9bd5 24px,
+      #5b9bd5 25px,
+      transparent 25px,
+      transparent 50px
     ),
-    /* Fondo blanco base */
-    linear-gradient(135deg, #ffffff, #faf9f7);
+    /* Líneas de puntos más claras entre las principales */
+    repeating-linear-gradient(
+      to bottom,
+      transparent 0px,
+      transparent 49px,
+      #dae3f3 49px,
+      #dae3f3 50px
+    ),
+    /* Fondo con textura de papel */
+    linear-gradient(135deg, #ffffff 0%, #fdfcfb 50%, #faf8f5 100%);
   
   background-size: 
+    100% 100%,
     100% 100%,
     100% 100%,
     100% 100%;
   background-position: 
     0 0,
     0 0,
+    0 0,
     0 0;
   background-attachment: 
+    fixed,
     local,
     local,
     local;
+  
+  background-repeat: repeat-y, repeat, repeat, repeat;
+  background-clip: padding-box, padding-box, padding-box, padding-box;
 }
 
 div.lether::before {
   content: '';
   position: absolute;
-  top: -8px;
-  left: -8px;
-  right: -8px;
-  bottom: -8px;
-  background: linear-gradient(135deg, var(--primary-rose) 0%, var(--secondary-burgundy) 100%);
-  z-index: -1;
-  border-radius: var(--radius-lg);
-  filter: blur(8px);
-  opacity: 0.15;
+  top: 0;
+  left: 40px;
+  width: 25px;
+  bottom: 0;
+  background: transparent;
+  border-right: 4px solid #e74c3c;
+  z-index: 0;
+  opacity: 0.9;
 }
 
 div.lether::after {
@@ -76,18 +88,20 @@ div.lether::after {
   position: absolute;
   inset: 0;
   background-image: 
-    radial-gradient(circle at 20% 50%, rgba(212, 103, 143, 0.05) 0%, transparent 50%),
-    radial-gradient(circle at 80% 80%, rgba(139, 58, 90, 0.03) 0%, transparent 50%);
+    radial-gradient(circle at 15% 30%, rgba(212, 103, 143, 0.03) 0%, transparent 50%),
+    radial-gradient(circle at 85% 70%, rgba(139, 58, 90, 0.02) 0%, transparent 50%);
   border-radius: var(--radius-lg);
   pointer-events: none;
+  z-index: 0;
 }
 
 /* Title in Letter */
 h1.title {
   font-size: clamp(2rem, 6vw, 2.8em);
-  text-align: center;
+  text-align: left;
   margin-bottom: 8px;
   margin-top: 0;
+  margin-left: 0;
   font-family: var(--font-serif);
   font-weight: 400;
   color: var(--primary-rose-dark);
