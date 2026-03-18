@@ -76,7 +76,7 @@ export function fixGitHubUrl(url) {
       // a: raw.githubusercontent.com/owner/repo/branch/path
       if (cleanUrl.includes('/blob/')) {
         cleanUrl = cleanUrl.replace(
-          /https?:\/\/github\.com\/([^\/]+)\/([^\/]+)\/blob\/([^\/]+)\/(.*)/,
+          /https?:\/\/github\.com\/([^/]+)\/([^/]+)\/blob\/([^/]+)\/(.*)/,
           'https://raw.githubusercontent.com/$1/$2/$3/$4'
         );
       }

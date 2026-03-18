@@ -2,7 +2,7 @@ import "../styles/Cards.css";
 import Container from "react-bootstrap/Container";
 import Dropdown from "react-bootstrap/Dropdown";
 import Carousel from "react-bootstrap/Carousel";
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import WelcomeMessage from "./WelcomeMessage";
 import EnvelopeLoader from "./EnvelopeLoader";
