@@ -6,8 +6,8 @@ import '../styles/EnvelopeAnimation.css';
  */
 export default function EnvelopeAnimation({ onAnimationEnd }) {
   return (
-    <div className="envelope-animation-wrapper">
-      <div className="envelope-container" onAnimationEnd={onAnimationEnd}>
+    <div className="envelope-animation-wrapper" role="status" aria-label="Abriendo sobre">
+      <div className="envelope-container" onAnimationEnd={onAnimationEnd} aria-hidden="true">
         {/* Cuerpo del sobre - rectángulo base */}
         <div className="envelope-body">
           <div className="body-face">

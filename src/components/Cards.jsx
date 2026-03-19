@@ -233,9 +233,9 @@ export default function Cards() {
           aria-label={`Contenido de la carta: ${displayedWordsTitle}`}
         >
 
-          <h1 className="title" aria-label={`Título: ${displayedWordsTitle}`}>
+          <h2 className="title" aria-label={`Título: ${displayedWordsTitle}`}>
             {displayedWordsTitle}
-          </h1>
+          </h2>
           <p className="line" aria-hidden="true"></p>
           <p className="content" aria-live="polite" aria-atomic="false">
             {displayedWords}
@@ -294,6 +294,7 @@ export default function Cards() {
           {/* Image Error Message */}
           {imagenVisible && carta?.img && imageError && !carta?.special && (
             <div
+              role="alert"
               style={{
                 marginTop: "var(--spacing-lg)",
                 padding: "var(--spacing-md)",

@@ -20,14 +20,14 @@ export default function Login() {
   };
 
   return (
-    <div className="login-container">
+    <main className="login-container" aria-label="Inicio de sesión">
       <div className="login-box">
         <div className="login-header">
           <h1>LoveGif</h1>
           <p>Acceso a tus cartas</p>
         </div>
 
-        <form onSubmit={handleSubmit} className="login-form">
+        <form onSubmit={handleSubmit} className="login-form" aria-label="Formulario de inicio de sesión">
           <div className="form-group">
             <label htmlFor="username">Usuario</label>
             <input
@@ -54,7 +54,7 @@ export default function Login() {
             />
           </div>
 
-          {error && <div className="error-message">{error}</div>}
+          {error && <div className="error-message" role="alert" aria-live="assertive">{error}</div>}
 
           <button type="submit" className="login-button">
             Entrar
@@ -66,6 +66,6 @@ export default function Login() {
           <small>Solicita acceso para más información</small>
         </div>
       </div>
-    </div>
+    </main>
   );
 }

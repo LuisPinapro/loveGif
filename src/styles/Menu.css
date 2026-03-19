@@ -101,7 +101,7 @@ span.title {
   transform: translateY(0);
 }
 
-.logout-btn:focus {
+.logout-btn:focus-visible {
   outline: 2px solid var(--primary-rose);
   outline-offset: 2px;
 }

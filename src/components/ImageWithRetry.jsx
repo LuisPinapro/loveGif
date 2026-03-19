@@ -54,6 +54,7 @@ export default function ImageWithRetry({
   if (hasError) {
     return (
       <div
+        role="alert"
         style={{
           width: '100%',
           height: '300px',
@@ -92,6 +93,8 @@ export default function ImageWithRetry({
       />
       {isLoading && retryCount > 0 && (
         <div
+          role="status"
+          aria-live="polite"
           style={{
             fontSize: '0.8rem',
             color: '#999',

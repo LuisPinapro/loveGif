@@ -90,6 +90,13 @@
   box-shadow: 0 0 0 3px rgba(212, 103, 143, 0.1);
 }
 
+.form-group input:focus-visible {
+  outline: 3px solid var(--primary-rose);
+  outline-offset: 2px;
+  border-color: var(--primary-rose);
+  background-color: white;
+}
+
 .form-group input::placeholder {
   color: #bbb;
 }
@@ -131,6 +138,11 @@
 
 .login-button:active {
   transform: translateY(0);
+}
+
+.login-button:focus-visible {
+  outline: 3px solid white;
+  outline-offset: 2px;
 }
 
 .login-footer {

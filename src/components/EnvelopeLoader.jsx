@@ -4,14 +4,14 @@ export default function EnvelopeLoader({ isLoading }) {
   if (!isLoading) return null;
 
   return (
-    <div className="envelope-loader-overlay">
+    <div className="envelope-loader-overlay" role="status" aria-live="polite" aria-label="Cargando cartas">
       <div className="envelope-loader-container">
         {/* Contenedor del sobre */}
-        <div className="envelope-wrapper">
+        <div className="envelope-wrapper" aria-hidden="true">
           {/* Corazones cayendo */}
           <div className="hearts-container">
             {[...Array(6)].map((_, i) => (
-              <div key={i} className="heart" style={{ 
+              <div key={i} className="heart" style={{
                 '--delay': `${i * 0.2}s`,
                 '--duration': '3s'
               }}>

@@ -83,6 +83,20 @@
   background-color: #fffbf7;
 }
 
+.form-carta input[type="text"]:focus-visible,
+.form-carta textarea:focus-visible,
+.form-carta input[type="file"]:focus-visible {
+  outline: 3px solid var(--primary-rose);
+  outline-offset: 2px;
+  border-color: var(--primary-rose-dark);
+  background-color: #fffbf7;
+}
+
+.form-carta button:focus-visible {
+  outline: 3px solid var(--primary-rose);
+  outline-offset: 2px;
+}
+
 /* Textarea Specific */
 .form-carta textarea {
   resize: vertical;

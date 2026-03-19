@@ -16,7 +16,7 @@ export default function WelcomeMessage() {
   if (!message) return null;
 
   return (
-    <div className="welcome-banner">
+    <div className="welcome-banner" role="status" aria-live="polite">
       <p className="welcome-text">{message}</p>
     </div>
   );
