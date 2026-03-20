@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 import "../styles/CartaForm.css";
 
 export default function CartaForm({ onCartaAgregada }) {
+  const { user } = useAuth();
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [imageFile, setImageFile] = useState(null);
@@ -21,6 +23,10 @@ export default function CartaForm({ onCartaAgregada }) {
     }
     if (!content.trim()) {
       setError("El contenido de la carta es requerido");
+      return;
+    }
+    if (!user?.usuarioId) {
+      setError("Error: Usuario no autenticado");
       return;
     }
 
@@ -46,11 +52,16 @@ export default function CartaForm({ onCartaAgregada }) {
         imageUrl = data.url;
       }
 
-      // Save carta
+      // Save carta with usuarioId
       const resCarta = await fetch("https://lovegifbackend.onrender.com/cartas", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ title, content, img: imageUrl }),
+        body: JSON.stringify({ 
+          usuarioId: user.usuarioId,
+          title, 
+          content, 
+          img: imageUrl 
+        }),
       });
 
       if (!resCarta.ok) throw new Error("Error al guardar la carta");

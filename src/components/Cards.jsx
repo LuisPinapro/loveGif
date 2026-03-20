@@ -4,6 +4,7 @@ import Dropdown from "react-bootstrap/Dropdown";
 import Carousel from "react-bootstrap/Carousel";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 import WelcomeMessage from "./WelcomeMessage";
 import EnvelopeLoader from "./EnvelopeLoader";
 import EnvelopeAnimation from "./EnvelopeAnimation";
@@ -13,6 +14,7 @@ import { fetchWithRetry, fixGitHubUrl } from "../utils/fetchUtils";
 const backendUrl = "https://lovegifbackend.onrender.com";
 
 export default function Cards() {
+  const { user } = useAuth();
   const [selectedId, setSelectedId] = useState(null);
   const [animationKey, setAnimationKey] = useState(0);
   const [showLetter, setShowLetter] = useState(false);
@@ -38,14 +40,16 @@ export default function Cards() {
     const fetchCartas = async () => {
       try {
         setLoading(true);
-        const response = await fetchWithRetry(
-          "https://lovegifbackend.onrender.com/cartas",
-          {
-            retries: 4,
-            backoffMs: 800,
-            timeout: 8000,
-          }
-        );
+        // Pasar usuarioId si está disponible
+        const cartasUrl = user?.usuarioId 
+          ? `${backendUrl}/cartas?usuarioId=${user.usuarioId}`
+          : `${backendUrl}/cartas`;
+        
+        const response = await fetchWithRetry(cartasUrl, {
+          retries: 4,
+          backoffMs: 800,
+          timeout: 8000,
+        });
         const data = await response.json();
         setCartas(data);
         setError(null);
@@ -57,7 +61,7 @@ export default function Cards() {
       }
     };
     fetchCartas();
-  }, []);
+  }, [user?.usuarioId]);
 
   // Envelope animation handler - triggers when animation ends
   const handleEnvelopeAnimationEnd = () => {
