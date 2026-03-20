@@ -51,11 +51,27 @@ export default function Cards() {
           timeout: 8000,
         });
         const data = await response.json();
-        setCartas(data);
-        setError(null);
+        
+        if (!response.ok) {
+          // Mejor manejo de errores
+          if (response.status === 503) {
+            setError("🔧 El servidor de base de datos está fuera de servicio. Por favor intenta más tarde.");
+          } else if (data.error) {
+            setError(`❌ ${data.error}`);
+          } else {
+            setError("No se pudieron cargar las cartas. Intenta más tarde.");
+          }
+        } else {
+          setCartas(data);
+          setError(null);
+        }
       } catch (err) {
         console.error("Error fetching cartas:", err);
-        setError("No se pudieron cargar las cartas. Intenta más tarde.");
+        if (err.message.includes("Failed to fetch") || err.message.includes("timeout")) {
+          setError("🔧 No hay conexión con el servidor. Verifica tu conexión a internet.");
+        } else {
+          setError("❌ No se pudieron cargar las cartas. Intenta más tarde.");
+        }
       } finally {
         setLoading(false);
       }
