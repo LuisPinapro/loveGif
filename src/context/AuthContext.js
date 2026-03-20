@@ -1,22 +1,11 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
 
 const AuthContext = createContext();
-
-const USERS = {
-  LPINA: {
-    username: "LPINA",
-    password: "Luis2610",
-    displayName: "LPINA"
-  },
-  FLORY: {
-    username: "FLORY",
-    password: "1234",
-    displayName: "FLORY"
-  }
-};
+const backendUrl = "https://lovegifbackend.onrender.com";
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     // Check if user is already logged in (from session storage)
@@ -24,18 +13,43 @@ export function AuthProvider({ children }) {
     if (loggedInUser) {
       setUser(JSON.parse(loggedInUser));
     }
+    setLoading(false);
   }, []);
 
-  const login = (username, password) => {
-    const userData = USERS[username.toUpperCase()];
-    
-    if (!userData || userData.password !== password) {
-      throw new Error('Usuario o contraseña incorrectos');
-    }
+  const login = async (username, password) => {
+    try {
+      const response = await fetch(`${backendUrl}/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          usuario: username,
+          password: password,
+        }),
+      });
 
-    setUser(userData);
-    sessionStorage.setItem('currentUser', JSON.stringify(userData));
-    return userData;
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Error al autenticar');
+      }
+
+      // Asegurar que sea compatible con el componente Cart que espera username y displayName
+      const userData = {
+        usuarioId: data.usuarioId,
+        username: data.username,
+        displayName: data.displayName || data.nombre,
+        nombre: data.nombre,
+        apellido: data.apellido,
+      };
+
+      setUser(userData);
+      sessionStorage.setItem('currentUser', JSON.stringify(userData));
+      return userData;
+    } catch (error) {
+      throw new Error(error.message || 'Usuario o contraseña incorrectos');
+    }
   };
 
   const logout = () => {
@@ -44,7 +58,7 @@ export function AuthProvider({ children }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, login, logout, loading }}>
       {children}
     </AuthContext.Provider>
   );
